@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class RectangleResize extends JFrame 
 {
-	//¸¶¿ì½º ¿ÀÇÁ¼ÂÁÂÇ¥
+	//ë§ˆìš°ìŠ¤ ì˜¤í”„ì…‹ì¢Œí‘œ
 	public int offX, offY;
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
@@ -37,8 +37,8 @@ public class RectangleResize extends JFrame
 	class ResizeSq extends JPanel
 	{
 		
-		Vector<Point> startV = new Vector<Point>(); // ½ÃÀÛÁ¡
-		Vector<Point> endV = new Vector<Point>(); // ³¡
+		Vector<Point> startV = new Vector<Point>(); // ì‹œì‘ì 
+		Vector<Point> endV = new Vector<Point>(); // ë
 		
 
 		Point A1s = new Point(0,0);
@@ -55,15 +55,15 @@ public class RectangleResize extends JFrame
 			
 			this.addMouseListener(ml); 
 			this.addMouseMotionListener(ml);
-			//¹Ú½º 0
+			//ë°•ìŠ¤ 0
 			startV.add(A1s);
 			endV.add(A1e);
 
-			//¹Ú½º 1
+			//ë°•ìŠ¤ 1
 			startV.add(A2s);
 			endV.add(A2e);
 
-			//¹Ú½º 2
+			//ë°•ìŠ¤ 2
 			startV.add(A3s);
 			endV.add(A3e);
 		}
@@ -74,7 +74,7 @@ public class RectangleResize extends JFrame
 		{
 			super.paintComponent(g); 	
 
-			for(int i=0;i<startV.size();i++)  // º¤ÅÍ¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ±×¸²
+			for(int i=0;i<startV.size();i++)  // ë²¡í„°ì— ì €ì¥ëœ ê° ì‚¬ê°í˜•ì„ ë§¤ë²ˆ ê·¸ë¦¼
 				{
 					Point sp = startV.get(i);
 					Point ep = endV.get(i);	
@@ -87,10 +87,10 @@ public class RectangleResize extends JFrame
 			public void mousePressed(MouseEvent e)
 			{
 				rec = TransPoint.EndToTempRec(endV.get(BoxNum),10);
-				// ÀÓ½Ã »ç°¢Çü(¿ìÃøÇÏ´Ü ¸ğ¼­¸® ±ÙÃ³) ¾È¿¡ Ä¿¼­°¡ ÀÖÀ» °æ¿ì
+				// ì„ì‹œ ì‚¬ê°í˜•(ìš°ì¸¡í•˜ë‹¨ ëª¨ì„œë¦¬ ê·¼ì²˜) ì•ˆì— ì»¤ì„œê°€ ìˆì„ ê²½ìš°
 				if(rec.contains(new Point(e.getX(),e.getY())))
 				{			
-					//µå·¡±× ½ÃÀÛÀ» Ç¥½Ã
+					//ë“œë˜ê·¸ ì‹œì‘ì„ í‘œì‹œ
 					isDragged = true;
 				}
 			}
@@ -99,13 +99,13 @@ public class RectangleResize extends JFrame
 			
 			public void mouseReleased(MouseEvent e)
 			{
-				//¸¶¿ì½º ¹öÆ°ÀÌ ¸±¸®ÁîµÇ¸é µå·¡±× ¸ğµå Á¾·á
+				//ë§ˆìš°ìŠ¤ ë²„íŠ¼ì´ ë¦´ë¦¬ì¦ˆë˜ë©´ ë“œë˜ê·¸ ëª¨ë“œ ì¢…ë£Œ
 				isDragged = false;		
 			}
 			
 			public void mouseDragged(MouseEvent e)
 			{
-				//µå·¡±× ¸ğµåÀÎ °æ¿ì¿¡¸¸ »ç°¢Çü ÀÌµ¿½ÃÅ´
+				//ë“œë˜ê·¸ ëª¨ë“œì¸ ê²½ìš°ì—ë§Œ ì‚¬ê°í˜• ì´ë™ì‹œí‚´
 				if(isDragged)
 				{
 					endP.move(e.getX(),e.getY());

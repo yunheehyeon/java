@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class ColorChange extends JFrame 
 {
-	//¸¶¿ì½º ¿ÀÇÁ¼ÂÁÂÇ¥
+	//ë§ˆìš°ìŠ¤ ì˜¤í”„ì…‹ì¢Œí‘œ
 	public int offX, offY;
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
@@ -39,8 +39,8 @@ public class ColorChange extends JFrame
 	class ColorSq extends JPanel
 	{
 		
-		Vector<Point> startV = new Vector<Point>(); // ½ÃÀÛÁ¡
-		Vector<Point> endV = new Vector<Point>(); // ³¡
+		Vector<Point> startV = new Vector<Point>(); // ì‹œì‘ì 
+		Vector<Point> endV = new Vector<Point>(); // ë
 		Vector<Boolean> click = new Vector<Boolean>();
 		boolean[] tempB = new boolean[10];
 
@@ -58,21 +58,21 @@ public class ColorChange extends JFrame
 			
 			this.addMouseListener(ml); 
 			this.addMouseMotionListener(ml);
-			//¹Ú½º 0
+			//ë°•ìŠ¤ 0
 			startV.add(A1s);
 			endV.add(A1e);
 			tempB[0] = true;
 
 			//click.add(temp);
 
-			//¹Ú½º 1
+			//ë°•ìŠ¤ 1
 			startV.add(A2s);
 			endV.add(A2e);
 			tempB[1] = true;
 			//click.add(temp);
 
 
-			//¹Ú½º 2
+			//ë°•ìŠ¤ 2
 			startV.add(A3s);
 			endV.add(A3e);
 			tempB[2] = true;
@@ -86,7 +86,7 @@ public class ColorChange extends JFrame
 		{
 			super.paintComponent(g); 	
 
-			for(int i=0;i<endV.size();i++)  // º¤ÅÍ¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ±×¸²
+			for(int i=0;i<endV.size();i++)  // ë²¡í„°ì— ì €ì¥ëœ ê° ì‚¬ê°í˜•ì„ ë§¤ë²ˆ ê·¸ë¦¼
 				{
 					Point sp = startV.get(i);
 					Point ep = endV.get(i);	
@@ -103,7 +103,7 @@ public class ColorChange extends JFrame
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				//º¤ÅÍ¿¡ ÀúÀåµÈ »ç°¢Çü ¾È¿¡ Ä¿¼­°¡ ÀÖ´Â Áö È®ÀÎ
+				//ë²¡í„°ì— ì €ì¥ëœ ì‚¬ê°í˜• ì•ˆì— ì»¤ì„œê°€ ìˆëŠ” ì§€ í™•ì¸
 				for(int i=0;i<endV.size();i++)  
 				{
 					Point sp = startV.get(i);
@@ -137,3 +137,4 @@ public class ColorChange extends JFrame
 		new ColorChange();
 	}
 }
+

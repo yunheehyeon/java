@@ -8,7 +8,7 @@ import java.util.Vector;
 public class SqDrawEx extends JFrame 
 {
 	public boolean moveSq = false;
-	public int v=0;//º¤ÅÍ °ª ÀúÀå
+	public int v=0;//ë²¡í„° ê°’ ì €ì¥
 
 	public SqDrawEx()
 	{
@@ -25,8 +25,8 @@ public class SqDrawEx extends JFrame
 		Point endP=null;
 		Point tempP=null;
 		
-		Vector<Point> startV = new Vector<Point>(); // ½ÃÀÛÁ¡
-		Vector<Point> endV = new Vector<Point>(); // ³¡Á¡
+		Vector<Point> startV = new Vector<Point>(); // ì‹œì‘ì 
+		Vector<Point> endV = new Vector<Point>(); // ëì 
 
 		public DrawSq()
 		{
@@ -44,7 +44,7 @@ public class SqDrawEx extends JFrame
 
 			if(startV.size() != 0)
 			{
-				for(int i=0;i<endV.size();i++)  // º¤ÅÍ¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ±×¸²
+				for(int i=0;i<endV.size();i++)  // ë²¡í„°ì— ì €ì¥ëœ ê° ì‚¬ê°í˜•ì„ ë§¤ë²ˆ ê·¸ë¦¼
 				{
 					Point sp = startV.get(i);
 					Point ep = endV.get(i);	
