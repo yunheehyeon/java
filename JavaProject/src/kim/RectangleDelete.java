@@ -54,11 +54,9 @@ public class RectangleDelete extends JFrame
 		public ColorSq()
 		{
 			MouseListen ml = new MouseListen();
-			MyKeyListener kl = new MyKeyListener();
 
 			this.addMouseListener(ml); 
 			this.addMouseMotionListener(ml);
-			this.addKeyListener(kl);
 
 
 
@@ -160,17 +158,7 @@ public class RectangleDelete extends JFrame
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
 		}
-		class MyKeyListener extends KeyAdapter //implements KeyListener
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				
-				
-			}
-			public void keyReleased(KeyEvent e){}
-			public void keyTyped(KeyEvent e){}
-
-		}
+	
 	}
 	
 	public static void main(String[] args) 
