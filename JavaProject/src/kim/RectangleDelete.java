@@ -23,6 +23,7 @@ public class RectangleDelete extends JFrame
 	public RectangleDelete()
 	{
 		setContentPane(new ColorSq());
+
 		setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -53,7 +54,7 @@ public class RectangleDelete extends JFrame
 		public ColorSq()
 		{
 			MouseListen ml = new MouseListen();
-			KeyListen kl = new KeyListen();
+			MyKeyListener kl = new MyKeyListener();
 
 			this.addMouseListener(ml); 
 			this.addMouseMotionListener(ml);
@@ -105,32 +106,50 @@ public class RectangleDelete extends JFrame
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				//벡터에 저장된 사각형 안에 커서가 있는 지 확인
-				// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
-				for(int i=(clickV.size()-1);i>=0;i--)  
+				
+				if(e.getButton()==1)
 				{
-					Point sp = startV.get(i);
-					Point ep = endV.get(i);	
-
-					rec = TransPoint.pointToRec(sp,ep);
-					if(rec.contains(new Point(e.getX(),e.getY())))
-					{	
-						for(int j=0;j<endV.size();j++)
-							clickV.set(j,false);
-							//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
-						clickV.set(i,true);
-						// 해당 상자 색만 다시설정
-						break;					
-					}
-					else // 배경 클릭하면 초기화 
+					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
+					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
+					for(int i=(clickV.size()-1);i>=0;i--)  
 					{
-						for(int j=0;j<endV.size();j++)
+						Point sp = startV.get(i);
+						Point ep = endV.get(i);	
+
+						rec = TransPoint.pointToRec(sp,ep);
+						if(rec.contains(new Point(e.getX(),e.getY())))
+						{	
+							for(int j=0;j<endV.size();j++)
+								clickV.set(j,false);
+								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+							clickV.set(i,true);
+							// 해당 상자 색만 다시설정
+							BoxNum = new Integer(i);
+							break;					
+						}
+						else // 배경 클릭하면 초기화 
 						{
-							clickV.set(j,false);
-							BoxNum=null;
+							for(int j=0;j<endV.size();j++)
+							{
+								clickV.set(j,false);
+								BoxNum=null;
+							}
 						}
 					}
+
 				}
+				else if(e.getButton()==3)
+				{
+					if(BoxNum!=null)
+					{
+						startV.remove((int)BoxNum);
+						endV.remove((int)BoxNum);
+						clickV.remove((int)BoxNum);
+						BoxNum=null;
+						repaint();
+					}
+				}
+				
 				repaint();
 
 			}
@@ -141,22 +160,16 @@ public class RectangleDelete extends JFrame
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
 		}
-		class KeyListen extends KeyAdapter implements KeyListener
+		class MyKeyListener extends KeyAdapter //implements KeyListener
 		{
-			public void keyPressed(KeyEvent e)
+			public void keyPressed(KeyEvent e) 
 			{
-				if(e.getKeyCode() == KeyEvent.VK_DELETE)
-				{
-					if(BoxNum!=null)
-					{
-						startV.remove((int)BoxNum);
-						endV.remove((int)BoxNum);
-						clickV.remove((int)BoxNum);
-						
-					}
-				}
-				repaint();
+				
+				
 			}
+			public void keyReleased(KeyEvent e){}
+			public void keyTyped(KeyEvent e){}
+
 		}
 	}
 	
