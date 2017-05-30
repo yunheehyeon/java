@@ -7,11 +7,9 @@ import java.util.Vector;
 
 public class RectangleResize extends JFrame 
 {
-	//마우스 오프셋좌표
-	public int offX, offY;
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
-	int BoxNum = 2;
+	Integer BoxNum = 2;
 	
 	
 	public	Rectangle rec;

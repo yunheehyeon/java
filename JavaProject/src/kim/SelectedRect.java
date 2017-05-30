@@ -5,14 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
-public class ColorChange extends JFrame 
+public class SelectedRect extends JFrame 
 {
-	//마우스 오프셋좌표
-	public int offX, offY;
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
-	int BoxNum = 2;
-	
+	Integer BoxNum = 2; // null 값을 저장하기 위해 integer로 선언
+
 	
 	public	Rectangle rec;
 
@@ -22,7 +20,7 @@ public class ColorChange extends JFrame
 
 
 
-	public ColorChange()
+	public SelectedRect()
 	{
 		setContentPane(new ColorSq());
 		setSize(500,500);
@@ -41,8 +39,8 @@ public class ColorChange extends JFrame
 		
 		Vector<Point> startV = new Vector<Point>(); // 시작점
 		Vector<Point> endV = new Vector<Point>(); // 끝
-		Vector<Boolean> click = new Vector<Boolean>();
-		boolean[] tempB = new boolean[10];
+		Vector<Boolean> clickV = new Vector<Boolean>(); //클릭되어진 사각형 확인용
+
 
 		Point A1s = new Point(0,0);
 		Point A1e = new Point(100,100);
@@ -61,22 +59,18 @@ public class ColorChange extends JFrame
 			//박스 0
 			startV.add(A1s);
 			endV.add(A1e);
-			tempB[0] = true;
-
-			//click.add(temp);
+			clickV.add(false);
 
 			//박스 1
 			startV.add(A2s);
 			endV.add(A2e);
-			tempB[1] = true;
-			//click.add(temp);
+			clickV.add(false);
 
 
 			//박스 2
 			startV.add(A3s);
 			endV.add(A3e);
-			tempB[2] = true;
-			//click.add(temp);
+			clickV.add(false);
 
 		}
 		
@@ -90,12 +84,15 @@ public class ColorChange extends JFrame
 				{
 					Point sp = startV.get(i);
 					Point ep = endV.get(i);	
-					if(tempB[i]/*click.get(i).booleanValue()*/)
-						{g.setColor(Color.GREEN);}
-					else
-						{g.setColor(Color.RED);}
+					if((boolean)clickV.get(i)){
+						g.setColor(Color.RED);
+						g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+					}
+					else{
+						g.setColor(Color.GREEN);
+						g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+					}
 
-					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
 				}								
 		}
 		
@@ -104,21 +101,32 @@ public class ColorChange extends JFrame
 			public void mouseClicked(MouseEvent e)
 			{
 				//벡터에 저장된 사각형 안에 커서가 있는 지 확인
-				for(int i=0;i<endV.size();i++)  
+				// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
+				for(int i=(clickV.size()-1);i>=0;i--)  
 				{
 					Point sp = startV.get(i);
 					Point ep = endV.get(i);	
-					rec = TransPoint.pointToRec(sp,ep);
 
+					rec = TransPoint.pointToRec(sp,ep);
 					if(rec.contains(new Point(e.getX(),e.getY())))
 					{	
-						//Boolean tempB = new Boolean(true);
-						tempB[i]=false;
-						break;
-
-					//	click.setElementAt(tempB,i) ;
+						for(int j=0;j<endV.size();j++)
+							clickV.set(j,false);//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+						clickV.set(i,true);// 해당 상자 색만 다시설정
+						BoxNum = i;//선택된 박스 번호 저장
+						break;					
+					}
+					else // 배경 클릭하면 초기화 
+					{
+						for(int j=0;j<endV.size();j++)
+						{
+							clickV.set(j,false);
+							BoxNum=null;
+						}
 					}
 				}
+				repaint();
+
 			}
 
 
@@ -134,7 +142,6 @@ public class ColorChange extends JFrame
 	
 	public static void main(String[] args) 
 	{
-		new ColorChange();
+		new SelectedRect();
 	}
 }
-
