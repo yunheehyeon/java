@@ -107,7 +107,7 @@ public class RectangleDelete extends JFrame
 			public void mouseClicked(MouseEvent e)
 			{
 				
-				if(e.getButton()==1)
+				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
 				{
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
@@ -138,9 +138,9 @@ public class RectangleDelete extends JFrame
 					}
 
 				}
-				else if(e.getButton()==3)
+				else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
 				{
-					if(BoxNum!=null)
+					if(BoxNum!=null) // 선택된 박스가 있을 때만 실행
 					{
 						startV.remove((int)BoxNum);
 						endV.remove((int)BoxNum);
