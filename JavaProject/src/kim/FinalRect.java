@@ -3,22 +3,32 @@ package kim;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class FinalRect extends JFrame 
 {
-	public int afterStartX, afterStartY, afterEndX,afterEndY;
-	public boolean isDragged = false;
-	public boolean moveDragged = false;
-	int BoxNum = 0;
-	boolean ModeClick = false;
-	
-	
-	public	Rectangle rec;
 
-	public	Point startP;
-	public	Point endP;
-	public	Point moveP;
+	public ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
+	public ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
+	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용
+
+	public int BoxNum = 0;
+	// 현재 선택된 박스 번호
+
+
+
+	// 외부 조회용
+//-------------------------------------------------------------------------------------------
+	//내부적으로만 사용하는 변수
+	boolean sizeDragged = false;
+	boolean moveDragged = false;
+	boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
+	
+	
+	Rectangle rec;
+
+	Point moveP;
 
 
 
@@ -29,8 +39,6 @@ public class FinalRect extends JFrame
 		setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		startP = new Point();
-		endP = new Point();
 		moveP = new Point();
 	}
 
@@ -39,12 +47,6 @@ public class FinalRect extends JFrame
 	
 	class DrawRec extends JPanel
 	{
-		
-		Vector<Point> startV = new Vector<Point>(); // 시작점
-		Vector<Point> endV = new Vector<Point>(); // 끝
-		Vector<Boolean> clickV = new Vector<Boolean>(); //클릭되어진 사각형 확인용
-
-
 		public DrawRec()
 		{
 			MouseListen ml = new MouseListen();
@@ -56,39 +58,36 @@ public class FinalRect extends JFrame
 			startV.add(null);
 			endV.add(null);
 			clickV.add(false);
-
 		}
 		
-
 
 		public void paintComponent(Graphics g)
 		{
 			super.paintComponent(g); 	
 
 			for(int i=1;i<endV.size();i++)  // 벡터에 저장된 각 사각형을 매번 그림
-				{
-					Point sp = startV.get(i);
-					Point ep = endV.get(i);	
-					if((boolean)clickV.get(i)){
-						g.setColor(Color.RED);
-						g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
-					}
-					else{
-						g.setColor(Color.GREEN);
-						g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
-					}
-				////	if(startP != null)
-					//	g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
-
-				}								
+			{
+				Point sp = startV.get(i);
+				Point ep = endV.get(i);	
+				if((boolean)clickV.get(i)){
+					g.setColor(Color.RED);
+					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+				}
+				else{
+					g.setColor(Color.GREEN);
+					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+				}
+			}								
 		}
+
+
+
 		
 		class MouseListen extends MouseAdapter implements MouseMotionListener
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				Rectangle TempRecClick;
-
+				Rectangle tempRecClick;
 				if(ModeClick)// 선택 모드 
 				{
 					if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
@@ -99,8 +98,8 @@ public class FinalRect extends JFrame
 						{
 							Point sp = startV.get(i);
 							Point ep = endV.get(i);	
-							TempRecClick = TransPoint.pointToRec(sp,ep);
-							if(TempRecClick.contains(new Point(e.getX(),e.getY())))
+							tempRecClick = TransPoint.pointToRec(sp,ep);
+							if(tempRecClick.contains(new Point(e.getX(),e.getY())))
 							{	
 								for(int j=1;j<endV.size();j++)
 									clickV.set(j,false);
@@ -137,6 +136,8 @@ public class FinalRect extends JFrame
 				}
 
 			}
+
+
 			public void mousePressed(MouseEvent e)
 			{
 				Rectangle tempRecSize;
@@ -149,34 +150,31 @@ public class FinalRect extends JFrame
 					else
 						ModeClick = true;
 				}
-				
-				else{}	
+				else{}//구분용
+
 				
 				if(!ModeClick) // 그리기 모드 
 				{
 					// 초기화와 동시에 새로운 그림 만듦
-					startP = e.getPoint();		
 					startV.add(e.getPoint());
 					clickV.add(false);
 				}
-
-
-
 				else //선택모드
 				{
 					if(BoxNum!=0)
 					{
 						tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),10);
-						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum));
 
 						// 임시 사각형(우측하단 모서리 근처) 안에 커서가 있을 경우
 						if(tempRecSize.contains(new Point(e.getX(),e.getY())))
 						{			
 							//드래그 시작을 표시
-							isDragged = true;
+							sizeDragged = true;
 						}
 						else
 						{//임시 사각형(크기조절용)이 아닌 내부에 커서가 있으면 움직임
+							rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum));
+
 							if(rec.contains(new Point(e.getX(),e.getY())))
 							{
 								//상대 위치 저장
@@ -190,62 +188,47 @@ public class FinalRect extends JFrame
 					}
 				}
 			}
+
+
 			public void mouseReleased(MouseEvent e)
 			{
-				if(!ModeClick) // 그리기 모드
+				if(!ModeClick) // 그리기 모드, 커서 떼는 순간 현재 좌표를 end에 넣음
 				{
 					endV.add(e.getPoint());
-					endP = e.getPoint();
-					repaint();				
 				}
-				else // 선택모드
-				{
-					if(BoxNum!=0)
-					{
-						//마우스 버튼이 릴리즈되면 드래그 모드 종료
-						isDragged = false;
-						moveDragged = false;		
+				//마우스 버튼이 릴리즈되면 드래그 모드 종료
+				sizeDragged = false;
+				moveDragged = false;	
 
-					}
-				}
+				repaint();			
 			}
 			
 			public void mouseDragged(MouseEvent e)
 			{
 				Point tempEndP;
-				if(!ModeClick)// 그리기 모드
-				{
-					endP = e.getPoint();
-				}
-				else //선택모드
+				if(ModeClick)//선택모드
 				{
 					if(BoxNum!=0)
 					{
-						//드래그 모드인 경우에만 사각형 이동시킴
-						if(isDragged)
+						if(sizeDragged)//size 드래그 모드
 						{
 							tempEndP = new Point(e.getX(),e.getY());
-							endV.setElementAt(tempEndP,BoxNum);
+							endV.set(BoxNum,tempEndP);
 						}
-						if(moveDragged)
+						else if(moveDragged)//move 드래그 모드
 						{
 							rec.x = e.getX() - moveP.x;
 							rec.y = e.getY() - moveP.y;
 
 									
-							startV.setElementAt(TransPoint.RecToStartPoint(rec),BoxNum);
-							endV.setElementAt(TransPoint.RecToEndPoint(rec),BoxNum);
+							startV.set(BoxNum,TransPoint.RecToStartPoint(rec));
+							endV.set(BoxNum,TransPoint.RecToEndPoint(rec));
 						}
 					}					
 				}
 				repaint();
-
-			}			
-			public void mouseMoved(MouseEvent e){}			
-			public void mouseEntered(MouseEvent e){}
-			public void mouseExited(MouseEvent e){}
-		}
-		
+			}					
+		}		
 	}
 	
 	public static void main(String[] args) 
