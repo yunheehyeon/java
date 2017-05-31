@@ -91,40 +91,32 @@ public class FinalRect extends JFrame
 				{
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
-					if(clickV.size()==1)//생성된 상자가 없으면 그냥 그림 
-						{
-							startP = e.getPoint();		
-							startV.add(e.getPoint());
-							clickV.add(false);
-						}
-					else
+					for(int i=(clickV.size()-1);i>0;i--) 
 					{
-						for(int i=(clickV.size()-1);i>0;i--) 
-						{
-							Point sp = startV.get(i);
-							Point ep = endV.get(i);	
-							rec = TransPoint.pointToRec(sp,ep);
-							if(rec.contains(new Point(e.getX(),e.getY())))
-							{	
-								for(int j=0;j<endV.size();j++)
-									clickV.set(j,false);
-									//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
-								clickV.set(i,true);
-									// 해당 상자 색만 다시설정
-								BoxNum = i;
-								break;					
-							}
-							else // 배경 클릭하면 초기화 
-							{
-								for(int j=1;j<endV.size();j++)
-								{
-									clickV.set(j,false);
-									BoxNum=0;
-								}
-								break;
-							}
+						Point sp = startV.get(i);
+						Point ep = endV.get(i);	
+						rec = TransPoint.pointToRec(sp,ep);
+						if(rec.contains(new Point(e.getX(),e.getY())))
+						{	
+							for(int j=0;j<endV.size();j++)
+								clickV.set(j,false);
+								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+							clickV.set(i,true);
+								// 해당 상자 색만 다시설정
+							BoxNum = i;
+							break;					
 						}
-					}
+						else // 배경 클릭하면 초기화 
+						{
+							for(int j=1;j<endV.size();j++)
+							{
+								clickV.set(j,false);
+								BoxNum=0;
+							}
+							break;
+						}
+					}	
+					
 				}
 				else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
 				{
