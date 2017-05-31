@@ -112,12 +112,9 @@ public class RectangleMove extends JFrame
 					rec.x = e.getX() - moveP.x;
 					rec.y = e.getY() - moveP.y;
 
-					startP=TransPoint.RecToStartPoint(rec);
-					endP=TransPoint.RecToEndPoint(rec);
-
-									
-					startV.setElementAt(startP,BoxNum);
-					endV.setElementAt(endP,BoxNum);
+							
+					startV.setElementAt(TransPoint.RecToStartPoint(rec),BoxNum);
+					endV.setElementAt(TransPoint.RecToEndPoint(rec),BoxNum);
 						
 				}
 				repaint();

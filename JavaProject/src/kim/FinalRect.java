@@ -9,6 +9,7 @@ public class FinalRect extends JFrame
 {
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
+	public boolean moveDragged = false;
 	int BoxNum = 0;
 	boolean ModeClick = false;
 	
@@ -117,8 +118,7 @@ public class FinalRect extends JFrame
 									BoxNum=0;
 								}
 							}
-						}	
-						
+						}												
 					}
 					else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
 					{
@@ -139,7 +139,8 @@ public class FinalRect extends JFrame
 			}
 			public void mousePressed(MouseEvent e)
 			{
-				Rectangle TempRecPress;
+				Rectangle tempRecSize;
+
 
 				if(e.getButton()==2) // 마우스 가운데 바튼 누르면 만들기 모드 <-> 선택모드 선택 가능
 				{
@@ -148,8 +149,8 @@ public class FinalRect extends JFrame
 					else
 						ModeClick = true;
 				}
-				else{}				
-					
+				
+				else{}	
 				
 				if(!ModeClick) // 그리기 모드 
 				{
@@ -158,24 +159,36 @@ public class FinalRect extends JFrame
 					startV.add(e.getPoint());
 					clickV.add(false);
 				}
+
+
+
 				else //선택모드
 				{
 					if(BoxNum!=0)
 					{
-						TempRecPress = TransPoint.EndToTempRec(endV.get(BoxNum),10);
+						tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),10);
+						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum));
+
 						// 임시 사각형(우측하단 모서리 근처) 안에 커서가 있을 경우
-						if(TempRecPress.contains(new Point(e.getX(),e.getY())))
+						if(tempRecSize.contains(new Point(e.getX(),e.getY())))
 						{			
 							//드래그 시작을 표시
 							isDragged = true;
 						}
-					
+						else
+						{//임시 사각형(크기조절용)이 아닌 내부에 커서가 있으면 움직임
+							if(rec.contains(new Point(e.getX(),e.getY())))
+							{
+								//상대 위치 저장
+								moveP.x=e.getX() - rec.x;
+								moveP.y=e.getY() - rec.y;
+						
+								//드래그 시작을 표시
+								moveDragged = true;
+							}
+						}
 					}
-
-					
-
 				}
-				
 			}
 			public void mouseReleased(MouseEvent e)
 			{
@@ -190,7 +203,9 @@ public class FinalRect extends JFrame
 					if(BoxNum!=0)
 					{
 						//마우스 버튼이 릴리즈되면 드래그 모드 종료
-						isDragged = false;					
+						isDragged = false;
+						moveDragged = false;		
+
 					}
 				}
 			}
@@ -211,6 +226,15 @@ public class FinalRect extends JFrame
 						{
 							tempEndP = new Point(e.getX(),e.getY());
 							endV.setElementAt(tempEndP,BoxNum);
+						}
+						if(moveDragged)
+						{
+							rec.x = e.getX() - moveP.x;
+							rec.y = e.getY() - moveP.y;
+
+									
+							startV.setElementAt(TransPoint.RecToStartPoint(rec),BoxNum);
+							endV.setElementAt(TransPoint.RecToEndPoint(rec),BoxNum);
 						}
 					}					
 				}
