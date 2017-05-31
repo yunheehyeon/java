@@ -86,7 +86,9 @@ public class FinalRect extends JFrame
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				if(ModeClick)
+				Rectangle TempRecClick;
+
+				if(ModeClick)// 선택 모드 
 				{
 					if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
 					{
@@ -96,8 +98,8 @@ public class FinalRect extends JFrame
 						{
 							Point sp = startV.get(i);
 							Point ep = endV.get(i);	
-							rec = TransPoint.pointToRec(sp,ep);
-							if(rec.contains(new Point(e.getX(),e.getY())))
+							TempRecClick = TransPoint.pointToRec(sp,ep);
+							if(TempRecClick.contains(new Point(e.getX(),e.getY())))
 							{	
 								for(int j=1;j<endV.size();j++)
 									clickV.set(j,false);
@@ -137,41 +139,83 @@ public class FinalRect extends JFrame
 			}
 			public void mousePressed(MouseEvent e)
 			{
+				Rectangle TempRecPress;
+
 				if(e.getButton()==2) // 마우스 가운데 바튼 누르면 만들기 모드 <-> 선택모드 선택 가능
 				{
 					if(ModeClick)
 						ModeClick = false;
 					else
 						ModeClick = true;
-				}						
+				}
+				else{}				
 					
 				
-				if(!ModeClick)
+				if(!ModeClick) // 그리기 모드 
 				{
 					// 초기화와 동시에 새로운 그림 만듦
 					startP = e.getPoint();		
 					startV.add(e.getPoint());
 					clickV.add(false);
 				}
+				else //선택모드
+				{
+					if(BoxNum!=0)
+					{
+						TempRecPress = TransPoint.EndToTempRec(endV.get(BoxNum),10);
+						// 임시 사각형(우측하단 모서리 근처) 안에 커서가 있을 경우
+						if(TempRecPress.contains(new Point(e.getX(),e.getY())))
+						{			
+							//드래그 시작을 표시
+							isDragged = true;
+						}
+					
+					}
+
+					
+
+				}
 				
 			}
 			public void mouseReleased(MouseEvent e)
 			{
-				if(!ModeClick)
+				if(!ModeClick) // 그리기 모드
 				{
 					endV.add(e.getPoint());
 					endP = e.getPoint();
 					repaint();				
 				}
+				else // 선택모드
+				{
+					if(BoxNum!=0)
+					{
+						//마우스 버튼이 릴리즈되면 드래그 모드 종료
+						isDragged = false;					
+					}
+				}
 			}
 			
 			public void mouseDragged(MouseEvent e)
 			{
-				if(!ModeClick)
+				Point tempEndP;
+				if(!ModeClick)// 그리기 모드
 				{
 					endP = e.getPoint();
-					repaint();
 				}
+				else //선택모드
+				{
+					if(BoxNum!=0)
+					{
+						//드래그 모드인 경우에만 사각형 이동시킴
+						if(isDragged)
+						{
+							tempEndP = new Point(e.getX(),e.getY());
+							endV.setElementAt(tempEndP,BoxNum);
+						}
+					}					
+				}
+				repaint();
+
 			}			
 			public void mouseMoved(MouseEvent e){}			
 			public void mouseEntered(MouseEvent e){}
