@@ -162,7 +162,11 @@ public class RectangleDelete extends JFrame
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
 		}
+<<<<<<< HEAD
 		
+=======
+	
+>>>>>>> 24892c129330a1d63a46c13ac86659521f004d76
 	}
 	
 	public static void main(String[] args) 
