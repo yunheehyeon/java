@@ -163,7 +163,7 @@ public class FinalRect extends JFrame
 				{
 					if(BoxNum!=0)
 					{
-						tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),10);
+						tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),15);
 
 						// 임시 사각형(우측하단 모서리 근처) 안에 커서가 있을 경우
 						if(tempRecSize.contains(new Point(e.getX(),e.getY())))

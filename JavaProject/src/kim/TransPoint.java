@@ -26,7 +26,7 @@ public class TransPoint // 유틸
 
 	// 우측 하단 끝점을 중심으로 하는 가로 i포인트, 세로 i포인트인 임시 사각형 생성(변환 가능 범위)
 	public static Rectangle EndToTempRec(Point end,int i){ 
-		return new Rectangle(end.x-1,end.y-1,i,i);
+		return new Rectangle(end.x-i,end.y-i,i*2,i*2);
 	}
 
 }
