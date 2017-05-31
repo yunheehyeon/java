@@ -86,85 +86,92 @@ public class FinalRect extends JFrame
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				if(ModeClick){
-				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
+				if(ModeClick)
 				{
-					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
-					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
-					for(int i=(clickV.size()-1);i>0;i--) 
+					if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
 					{
-						Point sp = startV.get(i);
-						Point ep = endV.get(i);	
-						rec = TransPoint.pointToRec(sp,ep);
-						if(rec.contains(new Point(e.getX(),e.getY())))
-						{	
-							for(int j=0;j<endV.size();j++)
-								clickV.set(j,false);
-								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
-							clickV.set(i,true);
-								// 해당 상자 색만 다시설정
-							BoxNum = i;
-							break;					
-						}
-						else // 배경 클릭하면 초기화 
+						//벡터에 저장된 사각형 안에 커서가 있는 지 확인
+						// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
+						for(int i=(clickV.size()-1);i>0;i--) 
 						{
-							for(int j=1;j<endV.size();j++)
-							{
-								clickV.set(j,false);
-								BoxNum=0;
+							Point sp = startV.get(i);
+							Point ep = endV.get(i);	
+							rec = TransPoint.pointToRec(sp,ep);
+							if(rec.contains(new Point(e.getX(),e.getY())))
+							{	
+								for(int j=1;j<endV.size();j++)
+									clickV.set(j,false);
+									//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+								clickV.set(i,true);
+									// 해당 상자 색만 다시설정
+								BoxNum = i;
+								break;					
 							}
-							break;
-						}
-					}	
-					
-				}
-				else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
-				{
-					if(BoxNum!=0) // 선택된 박스가 있을 때만 실행
-					{
-						startV.remove(BoxNum);
-						endV.remove(BoxNum);
-						clickV.remove(BoxNum);
-						BoxNum=0; // 선택된 박스 해제
-						repaint();
+							else // 배경 클릭하면 초기화 
+							{
+								for(int j=1;j<endV.size();j++)
+								{
+									clickV.set(j,false);
+									BoxNum=0;
+								}
+							}
+						}	
+						
 					}
-				}
+					else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
+					{
+						if(BoxNum!=0) // 선택된 박스가 있을 때만 실행
+						{
+							startV.remove(BoxNum);
+							endV.remove(BoxNum);
+							clickV.remove(BoxNum);
+							BoxNum=0; // 선택된 박스 해제
+							repaint();
+						}
+					}
 				
-				repaint();	
-			}
+				
+					repaint();	
+				}
 
 			}
 			public void mousePressed(MouseEvent e)
 			{
+				if(e.getButton()==2) // 마우스 가운데 바튼 누르면 만들기 모드 <-> 선택모드 선택 가능
+				{
+					if(ModeClick)
+						ModeClick = false;
+					else
+						ModeClick = true;
+				}						
+					
+				
 				if(!ModeClick)
 				{
-
-				// 초기화와 동시에 새로운 그림 만듦
-				startP = e.getPoint();		
-				startV.add(e.getPoint());
-				clickV.add(false);
+					// 초기화와 동시에 새로운 그림 만듦
+					startP = e.getPoint();		
+					startV.add(e.getPoint());
+					clickV.add(false);
 				}
 				
 			}
 			public void mouseReleased(MouseEvent e)
 			{
-				if(!ModeClick){
-					if(clickV.size()==4)
-						ModeClick = true;
-
-
-				endV.add(e.getPoint());
-				endP = e.getPoint();
-				repaint();
-}
+				if(!ModeClick)
+				{
+					endV.add(e.getPoint());
+					endP = e.getPoint();
+					repaint();				
+				}
 			}
 			
 			public void mouseDragged(MouseEvent e)
 			{
-				if(!ModeClick){
-				endP = e.getPoint();
-				repaint();
-}
+				if(!ModeClick)
+				{
+					endP = e.getPoint();
+					repaint();
+				}
 			}			
 			public void mouseMoved(MouseEvent e){}			
 			public void mouseEntered(MouseEvent e){}
