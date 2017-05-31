@@ -5,11 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
-public class RectangleDelete extends JFrame 
+public class FinalRect extends JFrame 
 {
 	public int afterStartX, afterStartY, afterEndX,afterEndY;
 	public boolean isDragged = false;
 	int BoxNum = 0;
+	boolean ModeClick = false;
 	
 	
 	public	Rectangle rec;
@@ -20,9 +21,9 @@ public class RectangleDelete extends JFrame
 
 
 
-	public RectangleDelete()
+	public FinalRect()
 	{
-		setContentPane(new ColorSq());
+		setContentPane(new DrawRec());
 
 		setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +36,7 @@ public class RectangleDelete extends JFrame
 
 
 	
-	class ColorSq extends JPanel
+	class DrawRec extends JPanel
 	{
 		
 		Vector<Point> startV = new Vector<Point>(); // 시작점
@@ -43,41 +44,16 @@ public class RectangleDelete extends JFrame
 		Vector<Boolean> clickV = new Vector<Boolean>(); //클릭되어진 사각형 확인용
 
 
-		Point A1s = new Point(0,0);
-		Point A1e = new Point(100,100);
-		Point A2s = new Point(0,150);
-		Point A2e = new Point(100,250);
-		Point A3s = new Point(150,0);
-		Point A3e = new Point(250,100);
-
-
-		public ColorSq()
+		public DrawRec()
 		{
 			MouseListen ml = new MouseListen();
 
 			this.addMouseListener(ml); 
 			this.addMouseMotionListener(ml);
 
-			//박스 0
+			//박스 0 아무것도 안가릴때 Null 상자
 			startV.add(null);
 			endV.add(null);
-			clickV.add(false);
-
-
-			//박스 1
-			startV.add(A1s);
-			endV.add(A1e);
-			clickV.add(false);
-
-			//박스 2
-			startV.add(A2s);
-			endV.add(A2e);
-			clickV.add(false);
-
-
-			//박스 3
-			startV.add(A3s);
-			endV.add(A3e);
 			clickV.add(false);
 
 		}
@@ -100,6 +76,8 @@ public class RectangleDelete extends JFrame
 						g.setColor(Color.GREEN);
 						g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
 					}
+				////	if(startP != null)
+					//	g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
 
 				}								
 		}
@@ -108,37 +86,45 @@ public class RectangleDelete extends JFrame
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				
+				if(ModeClick){
 				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택
 				{
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
-					for(int i=(clickV.size()-1);i>0;i--)  
-					{
-						Point sp = startV.get(i);
-						Point ep = endV.get(i);	
-
-						rec = TransPoint.pointToRec(sp,ep);
-						if(rec.contains(new Point(e.getX(),e.getY())))
-						{	
-							for(int j=0;j<endV.size();j++)
-								clickV.set(j,false);
-								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
-							clickV.set(i,true);
-							// 해당 상자 색만 다시설정
-							BoxNum = i;
-							break;					
-						}
-						else // 배경 클릭하면 초기화 
+					if(clickV.size()==1)//생성된 상자가 없으면 그냥 그림 
 						{
-							for(int j=1;j<endV.size();j++)
+							startP = e.getPoint();		
+							startV.add(e.getPoint());
+							clickV.add(false);
+						}
+					else
+					{
+						for(int i=(clickV.size()-1);i>0;i--) 
+						{
+							Point sp = startV.get(i);
+							Point ep = endV.get(i);	
+							rec = TransPoint.pointToRec(sp,ep);
+							if(rec.contains(new Point(e.getX(),e.getY())))
+							{	
+								for(int j=0;j<endV.size();j++)
+									clickV.set(j,false);
+									//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+								clickV.set(i,true);
+									// 해당 상자 색만 다시설정
+								BoxNum = i;
+								break;					
+							}
+							else // 배경 클릭하면 초기화 
 							{
-								clickV.set(j,false);
-								BoxNum=0;
+								for(int j=1;j<endV.size();j++)
+								{
+									clickV.set(j,false);
+									BoxNum=0;
+								}
+								break;
 							}
 						}
 					}
-
 				}
 				else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 삭제
 				{
@@ -152,12 +138,42 @@ public class RectangleDelete extends JFrame
 					}
 				}
 				
-				repaint();
+				repaint();	
+			}
 
 			}
-			public void mousePressed(MouseEvent e){}
-			public void mouseReleased(MouseEvent e){}			
-			public void mouseDragged(MouseEvent e){}			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!ModeClick)
+				{
+
+				// 초기화와 동시에 새로운 그림 만듦
+				startP = e.getPoint();		
+				startV.add(e.getPoint());
+				clickV.add(false);
+				}
+				
+			}
+			public void mouseReleased(MouseEvent e)
+			{
+				if(!ModeClick){
+					if(clickV.size()==4)
+						ModeClick = true;
+
+
+				endV.add(e.getPoint());
+				endP = e.getPoint();
+				repaint();
+}
+			}
+			
+			public void mouseDragged(MouseEvent e)
+			{
+				if(!ModeClick){
+				endP = e.getPoint();
+				repaint();
+}
+			}			
 			public void mouseMoved(MouseEvent e){}			
 			public void mouseEntered(MouseEvent e){}
 			public void mouseExited(MouseEvent e){}
@@ -167,6 +183,6 @@ public class RectangleDelete extends JFrame
 	
 	public static void main(String[] args) 
 	{
-		new RectangleDelete();
+		new FinalRect();
 	}
 }
