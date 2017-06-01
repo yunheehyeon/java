@@ -8,227 +8,223 @@ import java.util.Vector;
 
 public class FinalRecJPanel extends JPanel
 {
-
-	public ArrayList<Point> startV = new ArrayList<Point>(); // �떆�옉�젏 紐⑥쓬 諛곗뿴 
-	public ArrayList<Point> endV = new ArrayList<Point>(); // �걹�젏 紐⑥쓬 諛곗뿴 
-	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //�겢由��릺�뼱吏� �궗媛곹삎 �솗�씤�슜
+	public ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
+	public ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
+	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용
 
 	public int BoxNum = 0;
-	// �쁽�옱 �꽑�깮�맂 諛뺤뒪 踰덊샇
+	// 현재 선택된 박스 번호
 
 
-
-	// �쇅遺� 議고쉶�슜
+	// 외부 조회용
 //-------------------------------------------------------------------------------------------
-	//�궡遺��쟻�쑝濡쒕쭔 �궗�슜�븯�뒗 蹂��닔
-	boolean sizeDragged = false; //��吏곸씠怨� �떢�� �궗媛곹삎 �븞�뿉�꽌 �닃���쓣�븣 true濡� 蹂��븿.
-	boolean moveDragged = false; //�겕湲곕�� 諛붽씀怨� �떢�� �궗媛곹삎�쓽 瑗�吏��젏�쓣 �닃���쓣�븣 true濡� 蹂��븿.
-	boolean ModeClick = false; // false : 洹몃━湲� 紐⑤뱶, true : �꽑�깮紐⑤뱶
+	//내부적으로만 사용하는 변수
+	boolean sizeDragged = false; //움직이고 싶은 사각형 안에서 눌렀을때 true로 변함.
+	boolean moveDragged = false; //크기를 바꾸고 싶은 사각형의 꼭지점을 눌렀을때 true로 변함.
+	boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	Point startP = new Point();
 	Point endP = new Point();
-	//�깮�꽦�븷 �븣 ��吏곸엫�쓣 蹂댁씠寃� 留뚮뱾�뼱二쇰뒗 �슜�룄
+	//생성할 때 움직임을 보이게 만들어주는 용도
 
-	//��吏곸씪�븣 �궗�슜�븯�뒗 �궗媛곹삎 援ъ“泥댁� Point援ъ“泥�
+	//움직일때 사용하는 사각형 구조체와 Point구조체
 	Rectangle rec;
 	Point moveP = new Point();
 
+	public FinalRecJPanel()
+	{
+		MouseListen ml = new MouseListen();
+		this.addMouseListener(ml); 
+		this.addMouseMotionListener(ml);
+		//마우스 리스너 등록
 
-
-		public FinalRecJPanel()
-		{
-			MouseListen ml = new MouseListen();
-			this.addMouseListener(ml); 
-			this.addMouseMotionListener(ml);
-			//留덉슦�뒪 由ъ뒪�꼫 �벑濡�
-
-			//諛뺤뒪0. �깮�꽦. �븘臾닿쾬�룄 �븞 媛�由ы궗�븣 �궗�슜�븯�뒗 Null �긽�옄
-			startV.add(null);
-			endV.add(null);
-			clickV.add(false);
-		}
-		
-
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g); 	
-
-			for(int i=1;i<endV.size();i++)  // 諛곗뿴�뿉 ���옣�맂 媛� �궗媛곹삎�쓣 留ㅻ쾲 �븯�굹�뵫 �쟾遺�
-			{
-				Point sp = startV.get(i);
-				Point ep = endV.get(i);	
-
-				//clickV 諛곗뿴�뿉 ���옣�맂 �젙蹂대�� �궗�슜�빐�꽌 紐뉖쾲吏� �긽�옄媛� �꽑�깮�릺�뼱�졇�엳�뒗吏� �솗�씤�븿. �꽑�깮�맂 �긽�옄�뒗 鍮④컙�깋
-				if((boolean)clickV.get(i)){
-					g.setColor(Color.RED);
-					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
-				}
-				else{
-					g.setColor(Color.GREEN);
-					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
-				}
-			}
-			if(startP != null)
-			{
-				g.setColor(Color.GREEN);
-				g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
-			}
-		}
-
-
-
-		
-		class MouseListen extends MouseAdapter implements MouseMotionListener
-		{
-			public void mouseClicked(MouseEvent e)
-			{
-				Rectangle tempRecClick;
-				if(ModeClick)//�꽑�깮 紐⑤뱶 
-				{
-					if(e.getButton()==1) // �쇊履� 留덉슦�뒪 �늻瑜� �븣 = �꽑�깮�븯湲�
-					{
-						//踰≫꽣�뿉 ���옣�맂 �궗媛곹삎 �븞�뿉 而ㅼ꽌媛� �엳�뒗 吏� �솗�씤
-						// 踰≫꽣�뿉 ���옣�맂 媛� �궗媛곹삎�쓣 留ㅻ쾲 洹몃┝. �떒, 理쒓렐�뿉 洹몃젮吏� �궗媛곹삎�씠 媛��옣 癒쇱� 寃��궗
-						for(int i=(endV.size()-1);i>0;i--) 
-						{
-							Point sp = startV.get(i);
-							Point ep = endV.get(i);	
-							tempRecClick = TransPoint.pointToRec(sp,ep); // �떆�옉, �걹�젏 �솢�슜�빐 �엫�떆�긽�옄 �깮�꽦
-							if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // �긽�옄 �븞�뿉 而ㅼ꽌媛� �엳�쑝硫�
-							{	
-								for(int j=1;j<endV.size();j++)
-									clickV.set(j,false);
-									//�븘臾� �긽�옄�굹 �겢由��븯硫� �슦�꽑 �쟾泥� �깋源� 珥덇린�솕 �븳�썑
-								clickV.set(i,true);
-									// �빐�떦 �긽�옄 �깋留� �떎�떆�꽕�젙
-								BoxNum = i;//�꽑�깮�릺�뼱吏� �쁽�옱 �긽�옄 踰덊샇 ���옣
-								break;					
-							}
-							else // 諛곌꼍 �겢由��븯硫� 珥덇린�솕 
-							{
-								for(int j=1;j<endV.size();j++)
-								{
-									clickV.set(j,false);
-									BoxNum=0;
-								}
-							}
-						}												
-					}
-					else if(e.getButton()==3) // �삤瑜몄そ 留덉슦�뒪 �늻瑜� �븣 = �꽑�깮�맂 �긽�옄 �궘�젣
-					{
-						if(BoxNum!=0) // �꽑�깮�맂 諛뺤뒪媛� �엳�쓣 �븣留� �떎�뻾
-						{
-							startV.remove(BoxNum);
-							endV.remove(BoxNum);
-							clickV.remove(BoxNum);
-							BoxNum=0; // �꽑�깮�맂 諛뺤뒪 �빐�젣
-						}
-					}						
-					repaint();	
-				}
-
-			}
-
-
-			public void mousePressed(MouseEvent e)
-			{
-				Rectangle tempRecSize; 
-				//�궗�씠利� 蹂�寃쏀븷 �븣 �벐�뒗 �엫�떆 �궗媛곹삎
-
-				if(e.getButton()==2) // 留덉슦�뒪 媛��슫�뜲 諛뷀듉 �늻瑜대㈃ 留뚮뱾湲� 紐⑤뱶 <-> �꽑�깮紐⑤뱶 �꽑�깮 媛��뒫
-				{
-					if(ModeClick)
-						ModeClick = false;
-					else
-						ModeClick = true;
-				}
-				else{}//援щ텇�슜 �떊寃� �꽩�꽩
-
-
-				if(!ModeClick)//洹몃━湲� 紐⑤뱶
-				{
-					startP = e.getPoint();	 // �깮�꽦 �떆 洹몃젮吏덈븣 �굹�삤�뒗 �엫�떆 �궗媛곹삎	
-
-					//�쁽�옱 而ㅼ꽌 醫뚰몴 ���옣 諛� clickV�뿉 �빐�떦 �룄�삎 踰덊샇 �깮�꽦�썑 false濡� 珥덇린�솕
-					startV.add(e.getPoint());
-					clickV.add(false);
-				}
-				else 		//�꽑�깮紐⑤뱶
-				{
-					if(BoxNum!=0) //�긽�옄媛� 1媛쒕씪�룄 �엳�뼱�빞 �옉�룞�븿.(0踰덉� Null�긽�옄�엫�쑝濡� �뾾�뒗 �뀍 移�)
-					{
-						tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),15);
-						// �빐�떦 �궗媛곹삎 �걹�젏 二쇱쐞�뿉 �엫�떆 �궗媛곹삎(�걹�젏 以묒떖�쑝濡� 媛�濡� 30, �꽭濡� 30)�깮�꽦
-						// �엫�떆 �궗媛곹삎(�슦痢≫븯�떒 紐⑥꽌由� 洹쇱쿂) �븞�뿉 而ㅼ꽌媛� �엳�쓣 寃쎌슦
-						if(tempRecSize.contains(new Point(e.getX(),e.getY())))
-						{			
-							//�뱶�옒洹� �떆�옉�쓣 �몴�떆
-							sizeDragged = true;
-						}
-						else
-						{	
-							//�엫�떆 �궗媛곹삎(�겕湲곗“�젅�슜) �븞�뿉 X && �궗媛곹삎 �궡遺��뿉 而ㅼ꽌媛� �엳�쓣 寃쎌슦
-							//�궗媛곹삎 �옄泥대�� ��吏곸뿬�빞�븿�쑝濡�, �렪�쓽瑜� �쐞�빐 �빐�떦 �궗媛곹삎�쓣 �엫�떆�궗媛곹삎�뿉 ���옣�빐�꽌 �뿰�궛.
-							rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //�엫�떆�궗媛곹삎
-							if(rec.contains(new Point(e.getX(),e.getY())))
-							{
-								//�긽�� �쐞移� ���옣
-								moveP.x=e.getX() - rec.x;
-								moveP.y=e.getY() - rec.y;
-						
-								//�뱶�옒洹� �떆�옉�쓣 �몴�떆
-								moveDragged = true;
-							}
-						}
-					}
-				}
-			}
-
-
-			public void mouseReleased(MouseEvent e)
-			{
-				startP = null;
-				endP = null;// 由대━�뒪�븯硫� �깮�꽦 �떆 洹몃젮吏덈븣 �굹�삤�뒗 �엫�떆 �궗媛곹삎 �궘�젣
-
-				if(!ModeClick) // 洹몃━湲� 紐⑤뱶, 而ㅼ꽌 �뼹�뒗 �닚媛� �쁽�옱 醫뚰몴瑜� end�뿉 �꽔�쓬
-				{
-					endV.add(e.getPoint());
-				}
-				//留덉슦�뒪 踰꾪듉�씠 由대━利덈릺硫� �뱶�옒洹� 紐⑤뱶 醫낅즺
-				sizeDragged = false;
-				moveDragged = false;	
-
-				repaint();			
-			}
-			
-			public void mouseDragged(MouseEvent e)
-			{
-				Point tempEndP;
-				if(ModeClick)//�꽑�깮紐⑤뱶
-				{
-					if(BoxNum!=0)
-					{
-						if(sizeDragged)//size �뱶�옒洹� 紐⑤뱶
-						{
-							tempEndP = new Point(e.getX(),e.getY());
-							endV.set(BoxNum,tempEndP);
-						}
-						else if(moveDragged)//move �뱶�옒洹� 紐⑤뱶
-						{
-							//�떆�옉�젏, �걹�젏�쓣 �엫�떆�궗媛곹삎�뿉 �꽔�뿀湲� �븣臾몄뿉, �떆�옉�젏 x,y媛믩쭔 諛붽씀硫� �굹癒몄� 醫뚰몴�뒗 �븣�븘�꽌 怨꾩궛�맖.
-							rec.x = e.getX() - moveP.x;
-							rec.y = e.getY() - moveP.y;
-									
-							startV.set(BoxNum,TransPoint.RecToStartPoint(rec));
-							endV.set(BoxNum,TransPoint.RecToEndPoint(rec));
-						}
-					}					
-				}
-				else
-					endP = e.getPoint(); // �깮�꽦 �떆 洹몃젮吏덈븣 �굹�삤�뒗 �엫�떆 �궗媛곹삎
-				repaint();
-			}					
-		}		
+		//박스0. 생성. 아무것도 안 가리킬때 사용하는 Null 상자
+		startV.add(null);
+		endV.add(null);
+		clickV.add(false);
 	}
+	
+
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g); 	
+
+		for(int i=1;i<endV.size();i++)  // 배열에 저장된 각 사각형을 매번 하나씩 전부
+		{
+			Point sp = startV.get(i);
+			Point ep = endV.get(i);	
+
+			//clickV 배열에 저장된 정보를 사용해서 몇번째 상자가 선택되어져있는지 확인함. 선택된 상자는 빨간색
+			if((boolean)clickV.get(i)){
+				g.setColor(Color.RED);
+				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+			}
+			else{
+				g.setColor(Color.GREEN);
+				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+			}
+		}
+		if(startP != null)
+		{
+			g.setColor(Color.GREEN);
+			g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
+		}
+	}
+
+
+
+	
+	class MouseListen extends MouseAdapter implements MouseMotionListener
+	{
+		public void mouseClicked(MouseEvent e)
+		{
+			Rectangle tempRecClick;
+			if(ModeClick)//선택 모드 
+			{
+				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택하기
+				{
+					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
+					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
+					for(int i=(endV.size()-1);i>0;i--) 
+					{
+						Point sp = startV.get(i);
+						Point ep = endV.get(i);	
+						tempRecClick = TransPoint.pointToRec(sp,ep); // 시작, 끝점 활용해 임시상자 생성
+						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // 상자 안에 커서가 있으면
+						{	
+							for(int j=1;j<endV.size();j++)
+								clickV.set(j,false);
+								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
+							clickV.set(i,true);
+								// 해당 상자 색만 다시설정
+							BoxNum = i;//선택되어진 현재 상자 번호 저장
+							break;					
+						}
+						else // 배경 클릭하면 초기화 
+						{
+							for(int j=1;j<endV.size();j++)
+							{
+								clickV.set(j,false);
+								BoxNum=0;
+							}
+						}
+					}												
+				}
+				else if(e.getButton()==3) // 오른쪽 마우스 누를 때 = 선택된 상자 삭제
+				{
+					if(BoxNum!=0) // 선택된 박스가 있을 때만 실행
+					{
+						startV.remove(BoxNum);
+						endV.remove(BoxNum);
+						clickV.remove(BoxNum);
+						BoxNum=0; // 선택된 박스 해제
+					}
+				}						
+				repaint();	
+			}
+
+		}
+
+
+		public void mousePressed(MouseEvent e)
+		{
+			Rectangle tempRecSize; 
+			//사이즈 변경할 때 쓰는 임시 사각형
+
+			if(e.getButton()==2) // 마우스 가운데 바튼 누르면 만들기 모드 <-> 선택모드 선택 가능
+			{
+				if(ModeClick)
+					ModeClick = false;
+				else
+					ModeClick = true;
+			}
+			else{}//구분용 신경 ㄴㄴ
+
+
+			if(!ModeClick)//그리기 모드
+			{
+				startP = e.getPoint();	 // 생성 시 그려질때 나오는 임시 사각형	
+
+				//현재 커서 좌표 저장 및 clickV에 해당 도형 번호 생성후 false로 초기화
+				startV.add(e.getPoint());
+				clickV.add(false);
+			}
+			else 		//선택모드
+			{
+				if(BoxNum!=0) //상자가 1개라도 있어야 작동함.(0번은 Null상자임으로 없는 셈 침)
+				{
+					tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),15);
+					// 해당 사각형 끝점 주위에 임시 사각형(끝점 중심으로 가로 30, 세로 30)생성
+					// 임시 사각형(우측하단 모서리 근처) 안에 커서가 있을 경우
+					if(tempRecSize.contains(new Point(e.getX(),e.getY())))
+					{			
+						//드래그 시작을 표시
+						sizeDragged = true;
+					}
+					else
+					{	
+						//임시 사각형(크기조절용) 안에 X && 사각형 내부에 커서가 있을 경우
+						//사각형 자체를 움직여야함으로, 편의를 위해 해당 사각형을 임시사각형에 저장해서 연산.
+						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //임시사각형
+						if(rec.contains(new Point(e.getX(),e.getY())))
+						{
+							//상대 위치 저장
+							moveP.x=e.getX() - rec.x;
+							moveP.y=e.getY() - rec.y;
+					
+							//드래그 시작을 표시
+							moveDragged = true;
+						}
+					}
+				}
+			}
+		}
+
+
+		public void mouseReleased(MouseEvent e)
+		{
+			startP = null;
+			endP = null;// 릴리스하면 생성 시 그려질때 나오는 임시 사각형 삭제
+
+			if(!ModeClick) // 그리기 모드, 커서 떼는 순간 현재 좌표를 end에 넣음
+			{
+				endV.add(e.getPoint());
+			}
+			//마우스 버튼이 릴리즈되면 드래그 모드 종료
+			sizeDragged = false;
+			moveDragged = false;	
+
+			repaint();			
+		}
+		
+		public void mouseDragged(MouseEvent e)
+		{
+			Point tempEndP;
+			if(ModeClick)//선택모드
+			{
+				if(BoxNum!=0)
+				{
+					if(sizeDragged)//size 드래그 모드
+					{
+						tempEndP = new Point(e.getX(),e.getY());
+						endV.set(BoxNum,tempEndP);
+					}
+					else if(moveDragged)//move 드래그 모드
+					{
+						//시작점, 끝점을 임시사각형에 넣었기 때문에, 시작점 x,y값만 바꾸면 나머지 좌표는 알아서 계산됨.
+						rec.x = e.getX() - moveP.x;
+						rec.y = e.getY() - moveP.y;
+								
+						startV.set(BoxNum,TransPoint.RecToStartPoint(rec));
+						endV.set(BoxNum,TransPoint.RecToEndPoint(rec));
+					}
+				}					
+			}
+			else
+				endP = e.getPoint(); // 생성 시 그려질때 나오는 임시 사각형
+			repaint();
+		}					
+	}	
+}
 	
 	
