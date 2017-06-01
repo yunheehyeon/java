@@ -8,26 +8,26 @@ import java.util.Vector;
 
 public class FinalRecJPanel extends JPanel
 {
-	public ArrayList<Point> startV = new ArrayList<Point>(); // ì‹œì‘ì  ëª¨ìŒ ë°°ì—´ 
-	public ArrayList<Point> endV = new ArrayList<Point>(); // ëì  ëª¨ìŒ ë°°ì—´ 
-	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //í´ë¦­ë˜ì–´ì§„ ì‚¬ê°í˜• í™•ì¸ìš©
+	public ArrayList<Point> startV = new ArrayList<Point>(); // ½ÃÀÛÁ¡ ¸ğÀ½ ¹è¿­ 
+	public ArrayList<Point> endV = new ArrayList<Point>(); // ³¡Á¡ ¸ğÀ½ ¹è¿­ 
+	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //Å¬¸¯µÇ¾îÁø »ç°¢Çü È®ÀÎ¿ë
 
 	public int BoxNum = 0;
-	// í˜„ì¬ ì„ íƒëœ ë°•ìŠ¤ ë²ˆí˜¸
+	// ÇöÀç ¼±ÅÃµÈ ¹Ú½º ¹øÈ£
 
 
-	// ì™¸ë¶€ ì¡°íšŒìš©
+	// ¿ÜºÎ Á¶È¸¿ë
 //-------------------------------------------------------------------------------------------
-	//ë‚´ë¶€ì ìœ¼ë¡œë§Œ ì‚¬ìš©í•˜ëŠ” ë³€ìˆ˜
-	boolean sizeDragged = false; //ì›€ì§ì´ê³  ì‹¶ì€ ì‚¬ê°í˜• ì•ˆì—ì„œ ëˆŒë €ì„ë•Œ trueë¡œ ë³€í•¨.
-	boolean moveDragged = false; //í¬ê¸°ë¥¼ ë°”ê¾¸ê³  ì‹¶ì€ ì‚¬ê°í˜•ì˜ ê¼­ì§€ì ì„ ëˆŒë €ì„ë•Œ trueë¡œ ë³€í•¨.
-	boolean ModeClick = false; // false : ê·¸ë¦¬ê¸° ëª¨ë“œ, true : ì„ íƒëª¨ë“œ
+	//³»ºÎÀûÀ¸·Î¸¸ »ç¿ëÇÏ´Â º¯¼ö
+	boolean sizeDragged = false; //¿òÁ÷ÀÌ°í ½ÍÀº »ç°¢Çü ¾È¿¡¼­ ´­·¶À»¶§ true·Î º¯ÇÔ.
+	boolean moveDragged = false; //Å©±â¸¦ ¹Ù²Ù°í ½ÍÀº »ç°¢ÇüÀÇ ²ÀÁöÁ¡À» ´­·¶À»¶§ true·Î º¯ÇÔ.
+	boolean ModeClick = false; // false : ±×¸®±â ¸ğµå, true : ¼±ÅÃ¸ğµå
 	
 	Point startP = new Point();
 	Point endP = new Point();
-	//ìƒì„±í•  ë•Œ ì›€ì§ì„ì„ ë³´ì´ê²Œ ë§Œë“¤ì–´ì£¼ëŠ” ìš©ë„
+	//»ı¼ºÇÒ ¶§ ¿òÁ÷ÀÓÀ» º¸ÀÌ°Ô ¸¸µé¾îÁÖ´Â ¿ëµµ
 
-	//ì›€ì§ì¼ë•Œ ì‚¬ìš©í•˜ëŠ” ì‚¬ê°í˜• êµ¬ì¡°ì²´ì™€ Pointêµ¬ì¡°ì²´
+	//¿òÁ÷ÀÏ¶§ »ç¿ëÇÏ´Â »ç°¢Çü ±¸Á¶Ã¼¿Í Point±¸Á¶Ã¼
 	Rectangle rec;
 	Point moveP = new Point();
 
@@ -36,9 +36,9 @@ public class FinalRecJPanel extends JPanel
 		MouseListen ml = new MouseListen();
 		this.addMouseListener(ml); 
 		this.addMouseMotionListener(ml);
-		//ë§ˆìš°ìŠ¤ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		//¸¶¿ì½º ¸®½º³Ê µî·Ï
 
-		//ë°•ìŠ¤0. ìƒì„±. ì•„ë¬´ê²ƒë„ ì•ˆ ê°€ë¦¬í‚¬ë•Œ ì‚¬ìš©í•˜ëŠ” Null ìƒì
+		//¹Ú½º0. »ı¼º. ¾Æ¹«°Íµµ ¾È °¡¸®Å³¶§ »ç¿ëÇÏ´Â Null »óÀÚ
 		startV.add(null);
 		endV.add(null);
 		clickV.add(false);
@@ -49,12 +49,12 @@ public class FinalRecJPanel extends JPanel
 	{
 		super.paintComponent(g); 	
 
-		for(int i=1;i<endV.size();i++)  // ë°°ì—´ì— ì €ì¥ëœ ê° ì‚¬ê°í˜•ì„ ë§¤ë²ˆ í•˜ë‚˜ì”© ì „ë¶€
+		for(int i=1;i<endV.size();i++)  // ¹è¿­¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ÇÏ³ª¾¿ ÀüºÎ
 		{
 			Point sp = startV.get(i);
 			Point ep = endV.get(i);	
 
-			//clickV ë°°ì—´ì— ì €ì¥ëœ ì •ë³´ë¥¼ ì‚¬ìš©í•´ì„œ ëª‡ë²ˆì§¸ ìƒìê°€ ì„ íƒë˜ì–´ì ¸ìˆëŠ”ì§€ í™•ì¸í•¨. ì„ íƒëœ ìƒìëŠ” ë¹¨ê°„ìƒ‰
+			//clickV ¹è¿­¿¡ ÀúÀåµÈ Á¤º¸¸¦ »ç¿ëÇØ¼­ ¸î¹øÂ° »óÀÚ°¡ ¼±ÅÃµÇ¾îÁ®ÀÖ´ÂÁö È®ÀÎÇÔ. ¼±ÅÃµÈ »óÀÚ´Â »¡°£»ö
 			if((boolean)clickV.get(i)){
 				g.setColor(Color.RED);
 				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
@@ -79,28 +79,28 @@ public class FinalRecJPanel extends JPanel
 		public void mouseClicked(MouseEvent e)
 		{
 			Rectangle tempRecClick;
-			if(ModeClick)//ì„ íƒ ëª¨ë“œ 
+			if(ModeClick)//¼±ÅÃ ¸ğµå 
 			{
-				if(e.getButton()==1) // ì™¼ìª½ ë§ˆìš°ìŠ¤ ëˆ„ë¥¼ ë•Œ = ì„ íƒí•˜ê¸°
+				if(e.getButton()==1) // ¿ŞÂÊ ¸¶¿ì½º ´©¸¦ ¶§ = ¼±ÅÃÇÏ±â
 				{
-					//ë²¡í„°ì— ì €ì¥ëœ ì‚¬ê°í˜• ì•ˆì— ì»¤ì„œê°€ ìˆëŠ” ì§€ í™•ì¸
-					// ë²¡í„°ì— ì €ì¥ëœ ê° ì‚¬ê°í˜•ì„ ë§¤ë²ˆ ê·¸ë¦¼. ë‹¨, ìµœê·¼ì— ê·¸ë ¤ì§„ ì‚¬ê°í˜•ì´ ê°€ì¥ ë¨¼ì € ê²€ì‚¬
+					//º¤ÅÍ¿¡ ÀúÀåµÈ »ç°¢Çü ¾È¿¡ Ä¿¼­°¡ ÀÖ´Â Áö È®ÀÎ
+					// º¤ÅÍ¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ±×¸². ´Ü, ÃÖ±Ù¿¡ ±×·ÁÁø »ç°¢ÇüÀÌ °¡Àå ¸ÕÀú °Ë»ç
 					for(int i=(endV.size()-1);i>0;i--) 
 					{
 						Point sp = startV.get(i);
 						Point ep = endV.get(i);	
-						tempRecClick = TransPoint.pointToRec(sp,ep); // ì‹œì‘, ëì  í™œìš©í•´ ì„ì‹œìƒì ìƒì„±
-						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // ìƒì ì•ˆì— ì»¤ì„œê°€ ìˆìœ¼ë©´
+						tempRecClick = TransPoint.pointToRec(sp,ep); // ½ÃÀÛ, ³¡Á¡ È°¿ëÇØ ÀÓ½Ã»óÀÚ »ı¼º
+						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // »óÀÚ ¾È¿¡ Ä¿¼­°¡ ÀÖÀ¸¸é
 						{	
 							for(int j=1;j<endV.size();j++)
 								clickV.set(j,false);
-								//ì•„ë¬´ ìƒìë‚˜ í´ë¦­í•˜ë©´ ìš°ì„  ì „ì²´ ìƒ‰ê¹” ì´ˆê¸°í™” í•œí›„
+								//¾Æ¹« »óÀÚ³ª Å¬¸¯ÇÏ¸é ¿ì¼± ÀüÃ¼ »ö±ò ÃÊ±âÈ­ ÇÑÈÄ
 							clickV.set(i,true);
-								// í•´ë‹¹ ìƒì ìƒ‰ë§Œ ë‹¤ì‹œì„¤ì •
-							BoxNum = i;//ì„ íƒë˜ì–´ì§„ í˜„ì¬ ìƒì ë²ˆí˜¸ ì €ì¥
+								// ÇØ´ç »óÀÚ »ö¸¸ ´Ù½Ã¼³Á¤
+							BoxNum = i;//¼±ÅÃµÇ¾îÁø ÇöÀç »óÀÚ ¹øÈ£ ÀúÀå
 							break;					
 						}
-						else // ë°°ê²½ í´ë¦­í•˜ë©´ ì´ˆê¸°í™” 
+						else // ¹è°æ Å¬¸¯ÇÏ¸é ÃÊ±âÈ­ 
 						{
 							for(int j=1;j<endV.size();j++)
 							{
@@ -110,14 +110,14 @@ public class FinalRecJPanel extends JPanel
 						}
 					}												
 				}
-				else if(e.getButton()==3) // ì˜¤ë¥¸ìª½ ë§ˆìš°ìŠ¤ ëˆ„ë¥¼ ë•Œ = ì„ íƒëœ ìƒì ì‚­ì œ
+				else if(e.getButton()==3) // ¿À¸¥ÂÊ ¸¶¿ì½º ´©¸¦ ¶§ = ¼±ÅÃµÈ »óÀÚ »èÁ¦
 				{
-					if(BoxNum!=0) // ì„ íƒëœ ë°•ìŠ¤ê°€ ìˆì„ ë•Œë§Œ ì‹¤í–‰
+					if(BoxNum!=0) // ¼±ÅÃµÈ ¹Ú½º°¡ ÀÖÀ» ¶§¸¸ ½ÇÇà
 					{
 						startV.remove(BoxNum);
 						endV.remove(BoxNum);
 						clickV.remove(BoxNum);
-						BoxNum=0; // ì„ íƒëœ ë°•ìŠ¤ í•´ì œ
+						BoxNum=0; // ¼±ÅÃµÈ ¹Ú½º ÇØÁ¦
 					}
 				}						
 				repaint();	
@@ -129,50 +129,50 @@ public class FinalRecJPanel extends JPanel
 		public void mousePressed(MouseEvent e)
 		{
 			Rectangle tempRecSize; 
-			//ì‚¬ì´ì¦ˆ ë³€ê²½í•  ë•Œ ì“°ëŠ” ì„ì‹œ ì‚¬ê°í˜•
+			//»çÀÌÁî º¯°æÇÒ ¶§ ¾²´Â ÀÓ½Ã »ç°¢Çü
 
-			if(e.getButton()==2) // ë§ˆìš°ìŠ¤ ê°€ìš´ë° ë°”íŠ¼ ëˆ„ë¥´ë©´ ë§Œë“¤ê¸° ëª¨ë“œ <-> ì„ íƒëª¨ë“œ ì„ íƒ ê°€ëŠ¥
+			if(e.getButton()==2) // ¸¶¿ì½º °¡¿îµ¥ ¹ÙÆ° ´©¸£¸é ¸¸µé±â ¸ğµå <-> ¼±ÅÃ¸ğµå ¼±ÅÃ °¡´É
 			{
 				if(ModeClick)
 					ModeClick = false;
 				else
 					ModeClick = true;
 			}
-			else{}//êµ¬ë¶„ìš© ì‹ ê²½ ã„´ã„´
+			else{}//±¸ºĞ¿ë ½Å°æ ¤¤¤¤
 
 
-			if(!ModeClick)//ê·¸ë¦¬ê¸° ëª¨ë“œ
+			if(!ModeClick)//±×¸®±â ¸ğµå
 			{
-				startP = e.getPoint();	 // ìƒì„± ì‹œ ê·¸ë ¤ì§ˆë•Œ ë‚˜ì˜¤ëŠ” ì„ì‹œ ì‚¬ê°í˜•	
+				startP = e.getPoint();	 // »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü	
 
-				//í˜„ì¬ ì»¤ì„œ ì¢Œí‘œ ì €ì¥ ë° clickVì— í•´ë‹¹ ë„í˜• ë²ˆí˜¸ ìƒì„±í›„ falseë¡œ ì´ˆê¸°í™”
+				//ÇöÀç Ä¿¼­ ÁÂÇ¥ ÀúÀå ¹× clickV¿¡ ÇØ´ç µµÇü ¹øÈ£ »ı¼ºÈÄ false·Î ÃÊ±âÈ­
 				startV.add(e.getPoint());
 				clickV.add(false);
 			}
-			else 		//ì„ íƒëª¨ë“œ
+			else 		//¼±ÅÃ¸ğµå
 			{
-				if(BoxNum!=0) //ìƒìê°€ 1ê°œë¼ë„ ìˆì–´ì•¼ ì‘ë™í•¨.(0ë²ˆì€ Nullìƒìì„ìœ¼ë¡œ ì—†ëŠ” ì…ˆ ì¹¨)
+				if(BoxNum!=0) //»óÀÚ°¡ 1°³¶óµµ ÀÖ¾î¾ß ÀÛµ¿ÇÔ.(0¹øÀº Null»óÀÚÀÓÀ¸·Î ¾ø´Â ¼À Ä§)
 				{
 					tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),15);
-					// í•´ë‹¹ ì‚¬ê°í˜• ëì  ì£¼ìœ„ì— ì„ì‹œ ì‚¬ê°í˜•(ëì  ì¤‘ì‹¬ìœ¼ë¡œ ê°€ë¡œ 30, ì„¸ë¡œ 30)ìƒì„±
-					// ì„ì‹œ ì‚¬ê°í˜•(ìš°ì¸¡í•˜ë‹¨ ëª¨ì„œë¦¬ ê·¼ì²˜) ì•ˆì— ì»¤ì„œê°€ ìˆì„ ê²½ìš°
+					// ÇØ´ç »ç°¢Çü ³¡Á¡ ÁÖÀ§¿¡ ÀÓ½Ã »ç°¢Çü(³¡Á¡ Áß½ÉÀ¸·Î °¡·Î 30, ¼¼·Î 30)»ı¼º
+					// ÀÓ½Ã »ç°¢Çü(¿ìÃøÇÏ´Ü ¸ğ¼­¸® ±ÙÃ³) ¾È¿¡ Ä¿¼­°¡ ÀÖÀ» °æ¿ì
 					if(tempRecSize.contains(new Point(e.getX(),e.getY())))
 					{			
-						//ë“œë˜ê·¸ ì‹œì‘ì„ í‘œì‹œ
+						//µå·¡±× ½ÃÀÛÀ» Ç¥½Ã
 						sizeDragged = true;
 					}
 					else
 					{	
-						//ì„ì‹œ ì‚¬ê°í˜•(í¬ê¸°ì¡°ì ˆìš©) ì•ˆì— X && ì‚¬ê°í˜• ë‚´ë¶€ì— ì»¤ì„œê°€ ìˆì„ ê²½ìš°
-						//ì‚¬ê°í˜• ìì²´ë¥¼ ì›€ì§ì—¬ì•¼í•¨ìœ¼ë¡œ, í¸ì˜ë¥¼ ìœ„í•´ í•´ë‹¹ ì‚¬ê°í˜•ì„ ì„ì‹œì‚¬ê°í˜•ì— ì €ì¥í•´ì„œ ì—°ì‚°.
-						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //ì„ì‹œì‚¬ê°í˜•
+						//ÀÓ½Ã »ç°¢Çü(Å©±âÁ¶Àı¿ë) ¾È¿¡ X && »ç°¢Çü ³»ºÎ¿¡ Ä¿¼­°¡ ÀÖÀ» °æ¿ì
+						//»ç°¢Çü ÀÚÃ¼¸¦ ¿òÁ÷¿©¾ßÇÔÀ¸·Î, ÆíÀÇ¸¦ À§ÇØ ÇØ´ç »ç°¢ÇüÀ» ÀÓ½Ã»ç°¢Çü¿¡ ÀúÀåÇØ¼­ ¿¬»ê.
+						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //ÀÓ½Ã»ç°¢Çü
 						if(rec.contains(new Point(e.getX(),e.getY())))
 						{
-							//ìƒëŒ€ ìœ„ì¹˜ ì €ì¥
+							//»ó´ë À§Ä¡ ÀúÀå
 							moveP.x=e.getX() - rec.x;
 							moveP.y=e.getY() - rec.y;
 					
-							//ë“œë˜ê·¸ ì‹œì‘ì„ í‘œì‹œ
+							//µå·¡±× ½ÃÀÛÀ» Ç¥½Ã
 							moveDragged = true;
 						}
 					}
@@ -184,13 +184,13 @@ public class FinalRecJPanel extends JPanel
 		public void mouseReleased(MouseEvent e)
 		{
 			startP = null;
-			endP = null;// ë¦´ë¦¬ìŠ¤í•˜ë©´ ìƒì„± ì‹œ ê·¸ë ¤ì§ˆë•Œ ë‚˜ì˜¤ëŠ” ì„ì‹œ ì‚¬ê°í˜• ì‚­ì œ
+			endP = null;// ¸±¸®½ºÇÏ¸é »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü »èÁ¦
 
-			if(!ModeClick) // ê·¸ë¦¬ê¸° ëª¨ë“œ, ì»¤ì„œ ë–¼ëŠ” ìˆœê°„ í˜„ì¬ ì¢Œí‘œë¥¼ endì— ë„£ìŒ
+			if(!ModeClick) // ±×¸®±â ¸ğµå, Ä¿¼­ ¶¼´Â ¼ø°£ ÇöÀç ÁÂÇ¥¸¦ end¿¡ ³ÖÀ½
 			{
 				endV.add(e.getPoint());
 			}
-			//ë§ˆìš°ìŠ¤ ë²„íŠ¼ì´ ë¦´ë¦¬ì¦ˆë˜ë©´ ë“œë˜ê·¸ ëª¨ë“œ ì¢…ë£Œ
+			//¸¶¿ì½º ¹öÆ°ÀÌ ¸±¸®ÁîµÇ¸é µå·¡±× ¸ğµå Á¾·á
 			sizeDragged = false;
 			moveDragged = false;	
 
@@ -200,18 +200,18 @@ public class FinalRecJPanel extends JPanel
 		public void mouseDragged(MouseEvent e)
 		{
 			Point tempEndP;
-			if(ModeClick)//ì„ íƒëª¨ë“œ
+			if(ModeClick)//¼±ÅÃ¸ğµå
 			{
 				if(BoxNum!=0)
 				{
-					if(sizeDragged)//size ë“œë˜ê·¸ ëª¨ë“œ
+					if(sizeDragged)//size µå·¡±× ¸ğµå
 					{
 						tempEndP = new Point(e.getX(),e.getY());
 						endV.set(BoxNum,tempEndP);
 					}
-					else if(moveDragged)//move ë“œë˜ê·¸ ëª¨ë“œ
+					else if(moveDragged)//move µå·¡±× ¸ğµå
 					{
-						//ì‹œì‘ì , ëì ì„ ì„ì‹œì‚¬ê°í˜•ì— ë„£ì—ˆê¸° ë•Œë¬¸ì—, ì‹œì‘ì  x,yê°’ë§Œ ë°”ê¾¸ë©´ ë‚˜ë¨¸ì§€ ì¢Œí‘œëŠ” ì•Œì•„ì„œ ê³„ì‚°ë¨.
+						//½ÃÀÛÁ¡, ³¡Á¡À» ÀÓ½Ã»ç°¢Çü¿¡ ³Ö¾ú±â ¶§¹®¿¡, ½ÃÀÛÁ¡ x,y°ª¸¸ ¹Ù²Ù¸é ³ª¸ÓÁö ÁÂÇ¥´Â ¾Ë¾Æ¼­ °è»êµÊ.
 						rec.x = e.getX() - moveP.x;
 						rec.y = e.getY() - moveP.y;
 								
@@ -221,7 +221,7 @@ public class FinalRecJPanel extends JPanel
 				}					
 			}
 			else
-				endP = e.getPoint(); // ìƒì„± ì‹œ ê·¸ë ¤ì§ˆë•Œ ë‚˜ì˜¤ëŠ” ì„ì‹œ ì‚¬ê°í˜•
+				endP = e.getPoint(); // »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü
 			repaint();
 		}					
 	}	

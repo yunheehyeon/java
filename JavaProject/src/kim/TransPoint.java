@@ -2,29 +2,29 @@ package kim;
 
 import java.awt.*;
 
-public class TransPoint // ìœ í‹¸
+public class TransPoint // À¯Æ¿
 {
-	//ì¢Œí‘œ ì…ë ¥í•˜ë©´ ì‚¬ê°í˜•ìœ¼ë¡œ ë§Œë“¤ì–´ì¤Œ
+	//ÁÂÇ¥ ÀÔ·ÂÇÏ¸é »ç°¢ÇüÀ¸·Î ¸¸µé¾îÁÜ
 	public static Rectangle pointToRec(int sx, int sy, int ex, int ey){ 
 		return new Rectangle(sx,sy,ex-sx,ey-sy);
 	} 
-	//í¬ì¸íŠ¸ ì…ë ¥í•˜ë©´ ì‚¬ê°í˜•ìœ¼ë¡œ ë§Œë“¤ì–´ì¤Œ
+	//Æ÷ÀÎÆ® ÀÔ·ÂÇÏ¸é »ç°¢ÇüÀ¸·Î ¸¸µé¾îÁÜ
 	public static Rectangle pointToRec(Point start, Point end){ 
 		return new Rectangle(start.x,start.y,end.x-start.x,end.y-start.y);
 	} 
 
-	//ì‚¬ê°í˜• ì…ë ¥í•˜ë©´ ì‹œì‘ ì¢Œí‘œ ë§Œë“¤ì–´ì¤Œ
+	//»ç°¢Çü ÀÔ·ÂÇÏ¸é ½ÃÀÛ ÁÂÇ¥ ¸¸µé¾îÁÜ
 	public static Point RecToStartPoint(Rectangle a){ 
 		return new Point(a.x,a.y);
 	} 
 
-	 //ì‚¬ê°í˜• ì…ë ¥í•˜ë©´ ë ì¢Œí‘œ ë§Œë“¤ì–´ì¤Œ
+	 //»ç°¢Çü ÀÔ·ÂÇÏ¸é ³¡ ÁÂÇ¥ ¸¸µé¾îÁÜ
 	public static Point RecToEndPoint(Rectangle a){
 		return new Point(a.x+a.width,a.y+a.height);
 	} 
 
 
-	// ìš°ì¸¡ í•˜ë‹¨ ëì ì„ ì¤‘ì‹¬ìœ¼ë¡œ í•˜ëŠ” ê°€ë¡œ ií¬ì¸íŠ¸, ì„¸ë¡œ ií¬ì¸íŠ¸ì¸ ì„ì‹œ ì‚¬ê°í˜• ìƒì„±(ë³€í™˜ ê°€ëŠ¥ ë²”ìœ„)
+	// ¿ìÃø ÇÏ´Ü ³¡Á¡À» Áß½ÉÀ¸·Î ÇÏ´Â °¡·Î iÆ÷ÀÎÆ®, ¼¼·Î iÆ÷ÀÎÆ®ÀÎ ÀÓ½Ã »ç°¢Çü »ı¼º(º¯È¯ °¡´É ¹üÀ§)
 	public static Rectangle EndToTempRec(Point end,int i){ 
 		return new Rectangle(end.x-i,end.y-i,i*2,i*2);
 	}
