@@ -25,6 +25,9 @@ public class FinalRect extends JFrame
 	boolean moveDragged = false; //크기를 바꾸고 싶은 사각형의 꼭지점을 눌렀을때 true로 변함.
 	boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
+	Point startP = new Point();
+	Point endP = new Point();
+	//생성할 때 움직임을 보이게 만들어주는 용도
 
 	//움직일때 사용하는 사각형 구조체와 Point구조체
 	Rectangle rec;
@@ -77,7 +80,12 @@ public class FinalRect extends JFrame
 					g.setColor(Color.GREEN);
 					g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
 				}
-			}								
+			}
+			if(startP != null)
+			{
+				g.setColor(Color.GREEN);
+				g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
+			}
 		}
 
 
@@ -152,6 +160,8 @@ public class FinalRect extends JFrame
 
 				if(!ModeClick)//그리기 모드
 				{
+					startP = e.getPoint();	 // 생성 시 그려질때 나오는 임시 사각형	
+
 					//현재 커서 좌표 저장 및 clickV에 해당 도형 번호 생성후 false로 초기화
 					startV.add(e.getPoint());
 					clickV.add(false);
@@ -190,6 +200,9 @@ public class FinalRect extends JFrame
 
 			public void mouseReleased(MouseEvent e)
 			{
+				startP = null;
+				endP = null;// 릴리스하면 생성 시 그려질때 나오는 임시 사각형 삭제
+
 				if(!ModeClick) // 그리기 모드, 커서 떼는 순간 현재 좌표를 end에 넣음
 				{
 					endV.add(e.getPoint());
@@ -224,6 +237,8 @@ public class FinalRect extends JFrame
 						}
 					}					
 				}
+				else
+					endP = e.getPoint(); // 생성 시 그려질때 나오는 임시 사각형
 				repaint();
 			}					
 		}		
