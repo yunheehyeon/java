@@ -4,15 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class FinalRecJPanel extends JPanel
 {
-	public ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
-	public ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
-	public ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용
 
-	public int BoxNum = 0;
+	public 	BoxModel boxM = new BoxModel("상자");
+
+	
+	ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
+	ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
+	ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용 기본 : false, 선택 : true
+
+	int BoxNum = 0;
 	// 현재 선택된 박스 번호
 
 
@@ -21,7 +24,7 @@ public class FinalRecJPanel extends JPanel
 	//내부적으로만 사용하는 변수
 	boolean sizeDragged = false; //움직이고 싶은 사각형 안에서 눌렀을때 true로 변함.
 	boolean moveDragged = false; //크기를 바꾸고 싶은 사각형의 꼭지점을 눌렀을때 true로 변함.
-	boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
+	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	Point startP = new Point();
 	Point endP = new Point();
@@ -30,6 +33,7 @@ public class FinalRecJPanel extends JPanel
 	//움직일때 사용하는 사각형 구조체와 Point구조체
 	Rectangle rec;
 	Point moveP = new Point();
+	
 
 	public FinalRecJPanel()
 	{
@@ -37,31 +41,32 @@ public class FinalRecJPanel extends JPanel
 		this.addMouseListener(ml); 
 		this.addMouseMotionListener(ml);
 		//마우스 리스너 등록
-
+		
 		//박스0. 생성. 아무것도 안 가리킬때 사용하는 Null 상자
 		startV.add(null);
 		endV.add(null);
 		clickV.add(false);
-	}
 	
-
+	}
+	 
+	 //view
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g); 	
 
-		for(int i=1;i<endV.size();i++)  // 배열에 저장된 각 사각형을 매번 하나씩 전부
-		{
-			Point sp = startV.get(i);
-			Point ep = endV.get(i);	
+		boxM.ArrayPointToRec(startV,endV,clickV);
 
-			//clickV 배열에 저장된 정보를 사용해서 몇번째 상자가 선택되어져있는지 확인함. 선택된 상자는 빨간색
-			if((boolean)clickV.get(i)){
+		for(int i=1;i<boxM.ArrSize();i++)  // 모델 객체에 저장된 각 사각형을 매번 하나씩 전부 그림
+		{
+
+			//배열에 저장된 정보를 사용해서 몇번째 상자가 선택되어져있는지 확인함. 선택된 상자는 빨간색
+			if(boxM.getClick(i)){
 				g.setColor(Color.RED);
-				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+				g.fillRect(boxM.recgetX(i),boxM.recgetY(i), boxM.getRecWidth(i), boxM.getRecHeight(i));
 			}
 			else{
 				g.setColor(Color.BLACK);
-				g.drawRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+				g.drawRect(boxM.recgetX(i),boxM.recgetY(i), boxM.getRecWidth(i), boxM.getRecHeight(i));
 			}
 		}
 		if(startP != null)
@@ -73,7 +78,7 @@ public class FinalRecJPanel extends JPanel
 
 
 
-	
+	//control
 	class MouseListen extends MouseAdapter implements MouseMotionListener
 	{
 		public void mouseClicked(MouseEvent e)
@@ -120,8 +125,8 @@ public class FinalRecJPanel extends JPanel
 						BoxNum=0; // 선택된 박스 해제
 					}
 				}						
-				repaint();	
 			}
+			repaint();	
 
 		}
 

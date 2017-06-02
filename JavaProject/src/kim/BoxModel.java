@@ -6,32 +6,45 @@ import java.util.ArrayList;
 
 public class BoxModel
 {
-	String BoxSetName;
-	private static ArrayList<Rectangle> Box = new ArrayList<Rectangle>();
-	private ArrayList<Boolean> clickM = new ArrayList<Boolean>(); 
-	int NowBoxNumM = 0;
+	public String BoxSetName;
+	public ArrayList<Rectangle> Box = new ArrayList<Rectangle>();
+	public ArrayList<Boolean> clickM = new ArrayList<Boolean>(); 
+	public int NowBoxNumM = 0;
 
 
 
 	BoxModel(String BoxSetName)
 	{
 		this.BoxSetName = BoxSetName;
+		Box.add(null);
+		clickM.add(false);
+
 	}
 
 
 
 
-	//ë°°ì—´ : í¬ì¸íŠ¸ -> ìƒìë¡œ ë³€í™˜ ë©”ì†Œë“œ
+	//¹è¿­ : ÀÓ½Ã Æ÷ÀÎÆ®¸¦ ¸ğµ¨ °´Ã¼¿¡ ÀúÀå
 	void ArrayPointToRec(ArrayList<Point> start, ArrayList<Point> end, ArrayList<Boolean> click)
 	{
-		for(int i=0;i<end.size();i++)
+
+		Box.clear();
+		clickM.clear();
+		Box.add(null);
+		clickM.add(false);
+
+		for(int i=1;i<end.size();i++)
 		{
-			Box.set(i,TransPoint.pointToRec(start.get(i),end.get(i)));
-			clickM.set(i,click.get(i));
+			Box.add(TransPoint.pointToRec(start.get(i),end.get(i)));
+			clickM.add(click.get(i));				
+			
+			
+			if(click.get(i)==true)
+				NowBoxNumM = i;
 		}
 	}
 
-	//ìƒì ë¶ˆëŸ¬ì˜¬ë•Œ ì‚¬ìš©, startV,endVì— ì‚¬ìš©
+	//»óÀÚ ºÒ·¯¿Ã¶§ »ç¿ë, ¸ğµ¨ ¹Ú½º °´Ã¼¸¦ startV,endV,clickV·Î È¯¿øÇÔ.
 	void RodeArrayBox(ArrayList<Point> start,ArrayList<Point> end, ArrayList<Boolean> click)
 	{
 		for(int i=0;i<Box.size();i++)
@@ -46,49 +59,94 @@ public class BoxModel
 
 
 
-//í˜„ì¬ ì„ íƒëœ ìƒì ë²ˆí˜¸ ë¡œë“œ
-	int getNum(){
+	//control
+	//ÇöÀç ¼±ÅÃµÈ »óÀÚ ¹øÈ£ ·Îµå
+	public int getNum(){
 		return NowBoxNumM;
 	}
+	//¹è¿­ »çÀÌÁî
+	public int ArrSize(){
+		return Box.size();
+	}
 
-	//ë²ˆí˜¸ ìƒì ë¡œë“œ
-	Rectangle getRec(int i){
+	//¹øÈ£ »óÀÚ Å¬¸¯ ¿©ºÎ ·Îµå
+	public boolean getClick(int i){
+		return (boolean) clickM.get(i);
+	}
+
+	//¹øÈ£ »óÀÚ ·Îµå
+	public Rectangle getRec(int i){
 		return Box.get(i);
 	}
-	//í˜„ì¬ ì„ íƒëœ ìƒìë¡œë“œ
-	Rectangle getRec(){
+	//ÇöÀç ¼±ÅÃµÈ »óÀÚ·Îµå
+	public Rectangle getRec(){
 		return getRec(NowBoxNumM);
 	}
 
 
-	//ë²ˆí˜¸ ìƒì ì‹œì‘ Point
-	Point getStartPoint(int i){
+	//¹øÈ£ »óÀÚ ½ÃÀÛ Point
+	public Point getStartPoint(int i){
 		return Box.get(i).getLocation();
 	}
-//í˜„ì¬ ì„ íƒëœ  ìƒì ì‹œì‘ Point
-	Point getStartPoint(){
+	//ÇöÀç ¼±ÅÃµÈ  »óÀÚ ½ÃÀÛ Point
+	public Point getStartPoint(){
 		return getStartPoint(NowBoxNumM);
 	}
 
 
-	//ë²ˆí˜¸ ìƒì ë†’ì´ ì„¸ë¡œ
-	int getRecHeight(int i){
-		return (int)Box.get(i).getHeight(); //getheightê°€ doubleë¦¬í„´í•´ì„œ í¸ì˜ë¥¼ ìœ„í•´ intë¡œ ê°•ì œí˜•ë³€í™˜
+	// »óÀÚ ½ÃÀÛ x°ª, y°ª
+	public int recgetX(int i)	{
+		return (int)Box.get(i).getX();
 	}
-	//í˜„ì¬ ì„ íƒëœ  ìƒì ë†’ì´ ì„¸ë¡œ
-	int getRecHeight(){
+	public int recgetX()	{
+		return (int)Box.get(NowBoxNumM).getX();
+	}
+
+
+	public int recgetY(int i)	{
+		return (int)Box.get(i).getY();
+	}
+	public int recgetY()	{
+		return (int)Box.get(NowBoxNumM).getY();
+	}
+
+
+
+	//¹øÈ£ »óÀÚ ³¡ Point
+	public Point getEndPoint(int i){
+		return TransPoint.RecToEndPoint(Box.get(i));
+	}
+	//ÇöÀç ¼±ÅÃµÈ  »óÀÚ ³¡ Point
+	public Point getEndPoint(){
+		return getEndPoint(NowBoxNumM);
+	}
+
+
+
+	//¹øÈ£ »óÀÚ ³Êºñ 
+	public int getRecWidth(int i){
+		return (int)Box.get(i).getWidth(); // »óµ¿
+	}
+	//ÇöÀç ¼±ÅÃµÈ »óÀÚ ³Êºñ 
+	public int getRecWidth(){
+		return getRecWidth(NowBoxNumM);
+	}
+
+
+
+	//¹øÈ£ »óÀÚ ³ôÀÌ 
+	public int getRecHeight(int i){
+		return (int)Box.get(i).getHeight(); //getheight°¡ double¸®ÅÏÇØ¼­ ÆíÀÇ¸¦ À§ÇØ int·Î °­Á¦Çüº¯È¯
+	}
+	//ÇöÀç ¼±ÅÃµÈ  »óÀÚ ³ôÀÌ 
+	public int getRecHeight(){
 		return getRecHeight(NowBoxNumM);
 	}
 
 
 
-	//ë²ˆí˜¸ ìƒì ë„ˆë¹„ ê°€ë¡œ
-	int getRecWidth(int i){
-		return (int)Box.get(i).getWidth(); // ìƒë™
-	}
-	//í˜„ì¬ ì„ íƒëœ ìƒì ë„ˆë¹„ ê°€ë¡œ
-	int getRecWidth(){
-		return getRecWidth(NowBoxNumM);
-	}
+
+	//½ÃÀÛÁ¡ ÀÔ·Â
+
 
 }
