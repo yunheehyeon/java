@@ -60,13 +60,13 @@ public class FinalRecJPanel extends JPanel
 				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
 			}
 			else{
-				g.setColor(Color.GREEN);
-				g.fillRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
+				g.setColor(Color.BLACK);
+				g.drawRect(sp.x, sp.y, ep.x-sp.x, ep.y-sp.y);
 			}
 		}
 		if(startP != null)
 		{
-			g.setColor(Color.GREEN);
+			g.setColor(Color.BLACK);
 			g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
 		}
 	}
