@@ -9,6 +9,13 @@ public class FinalRecJPanel extends JPanel
 {
 
 	public 	BoxModel boxM = new BoxModel("상자");
+	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
+
+	
+	
+	// 외부 조회용
+	//-------------------------------------------------------------------------------------------
+	// 내부적으로만 사용하는 변수
 
 	
 	ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
@@ -19,12 +26,9 @@ public class FinalRecJPanel extends JPanel
 	// 현재 선택된 박스 번호
 
 
-	// 외부 조회용
-//-------------------------------------------------------------------------------------------
-	//내부적으로만 사용하는 변수
+	
 	boolean sizeDragged = false; //움직이고 싶은 사각형 안에서 눌렀을때 true로 변함.
 	boolean moveDragged = false; //크기를 바꾸고 싶은 사각형의 꼭지점을 눌렀을때 true로 변함.
-	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	Point startP = new Point();
 	Point endP = new Point();
