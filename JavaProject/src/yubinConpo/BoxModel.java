@@ -11,6 +11,8 @@ public class BoxModel
 	public ArrayList<Boolean> clickM = new ArrayList<Boolean>(); 
 	public int NowBoxNumM = 0;
 	public ArrayList<Integer> ConType = new ArrayList<Integer>();
+	public ArrayList<String> conText = new ArrayList<String> ();
+
 	
 	
 	public static int BUTTON = 1;
@@ -34,22 +36,25 @@ public class BoxModel
 
 
 	//배열 : 임시 포인트를 모델 객체에 저장
-	void ArrayPointToRec(ArrayList<Point> start, ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type)
+	void ArrayPointToRec(ArrayList<Point> start, ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
 
 		Box.clear();
 		clickM.clear();
 		ConType.clear();
+		conText.clear();
 
 		Box.add(null);
 		clickM.add(false);
 		ConType.add(null);
+		conText.add(null);
 		
 		for(int i=1;i<end.size();i++)
 		{
 			Box.add(TransPoint.pointToRec(start.get(i),end.get(i)));
 			clickM.add(click.get(i));				
 			ConType.add(Type.get(i));
+			conText.add(Text.get(i));
 
 			
 			if(click.get(i)==true)
@@ -58,7 +63,7 @@ public class BoxModel
 	}
 
 	//상자 불러올때 사용, 모델 박스 객체를 startV,endV,clickV로 환원함.
-	void RodeArrayBox(ArrayList<Point> start,ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type)
+	void RodeArrayBox(ArrayList<Point> start,ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
 		for(int i=0;i<Box.size();i++)
 		{
@@ -66,13 +71,18 @@ public class BoxModel
 			end.set(i,TransPoint.RecToEndPoint(Box.get(i)));
 			click.set(i,clickM.get(i));
 			Type.set(i, ConType.get(i));
+			Text.set(i, conText.get(i));
 		}
 	}
 
 
 
 
-	public Integer getType(int i){
+	public String getString(int i)//텍스트 조회용
+	{
+		return conText.get(i);
+	}
+	public Integer getType(int i){ // 타입 조회용
 		return ConType.get(i);
 	}
 

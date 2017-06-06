@@ -10,7 +10,9 @@ public class componetVer extends JPanel
 
 	public 	BoxModel boxM = new BoxModel("상자");
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
-
+	
+	int Choose = BUTTON;
+	String viewText = "net";
 		
 	// 외부 조회용
 	//-------------------------------------------------------------------------------------------
@@ -23,7 +25,10 @@ public class componetVer extends JPanel
 	ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
 	ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용 기본 : false, 선택 : true
 	ArrayList<Integer> TypeV = new ArrayList<Integer>();
-
+	ArrayList<String> TextV = new ArrayList<String> ();
+	
+	
+	
 	int BoxNum = 0;
 	// 현재 선택된 박스 번호
 	public static int BUTTON = 1;
@@ -45,7 +50,6 @@ public class componetVer extends JPanel
 	Point moveP = new Point();
 	
 	
-	int a = JTEXTFIELD;
 	
 
 	public componetVer()
@@ -54,15 +58,13 @@ public class componetVer extends JPanel
 		this.addMouseListener(ml); 
 		this.addMouseMotionListener(ml);
 		//마우스 리스너 등록
-				
-		
 		
 		//박스0. 생성. 아무것도 안 가리킬때 사용하는 Null 상자
 		startV.add(new Point(10,10));
 		endV.add(new Point(10,10));
 		clickV.add(false);
 		TypeV.add(null);
-		
+		TextV.add(null);
 	
 	}
 	 
@@ -73,7 +75,7 @@ public class componetVer extends JPanel
 			
 		removeAll();
 
-		boxM.ArrayPointToRec(startV,endV,clickV, TypeV);
+		boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);
 
 		buttons.clear();
 		buttons.add(null);
@@ -93,7 +95,7 @@ public class componetVer extends JPanel
 			switch(boxM.getType(i))
 			{
 			case 1 :
-				j = new JButton();
+				j = new JButton(boxM.getString(i));
 				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
 				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
 				
@@ -103,10 +105,10 @@ public class componetVer extends JPanel
 				if(boxM.getClick(i))
 					j.setBackground(Color.RED);
 				else
-					//j.setBackground(Color.BLACK);
+					j.setBackground(Color.WHITE);
 				
-					buttons.add(j);
-					add(buttons.get(i));
+				buttons.add(j);
+				add(buttons.get(i));
 				break;
 			case 2 :
 				j = new JPanel();
@@ -121,8 +123,8 @@ public class componetVer extends JPanel
 				else
 					j.setBackground(Color.WHITE);
 				
-					buttons.add(j);
-					add(buttons.get(i));
+				buttons.add(j);
+				add(buttons.get(i));
 				break;
 
 			case 3 :
@@ -137,14 +139,14 @@ public class componetVer extends JPanel
 				if(boxM.getClick(i))
 					j.setBackground(Color.RED);
 				else
-					//j.setBackground(Color.BLACK);
+					j.setBackground(Color.WHITE);
 				
-					buttons.add(j);
-					add(buttons.get(i));
+				buttons.add(j);
+				add(buttons.get(i));
 				break;
 
 			case 4 :
-				j = new JTextField();
+				j = new JTextField(boxM.getString(i));
 				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
 				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
 				
@@ -154,10 +156,10 @@ public class componetVer extends JPanel
 				if(boxM.getClick(i))
 					j.setBackground(Color.RED);
 				else
-					//j.setBackground(Color.BLACK);
+					j.setBackground(Color.WHITE);
 				
-					buttons.add(j);
-					add(buttons.get(i));
+				buttons.add(j);
+				add(buttons.get(i));
 				break;
 			}			
 		}
@@ -181,7 +183,7 @@ public class componetVer extends JPanel
 			{
 				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택하기
 				{
-					removeAll();
+					//removeAll();
 
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
@@ -244,7 +246,9 @@ public class componetVer extends JPanel
 
 			if(!ModeClick)//그리기 모드
 			{
-				TypeV.add(a);
+				TypeV.add(Choose);
+				TextV.add(viewText);
+				
 				startP = e.getPoint();	 // 생성 시 그려질때 나오는 임시 사각형	
 
 				//현재 커서 좌표 저장 및 clickV에 해당 도형 번호 생성후 false로 초기화
