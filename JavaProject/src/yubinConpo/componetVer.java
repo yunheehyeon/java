@@ -11,26 +11,27 @@ public class componetVer extends JPanel
 	public 	BoxModel boxM = new BoxModel("상자");
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
-	int Choose = BUTTON;
-	String viewText = "net";
+	int Choose = BUTTON; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
+	String viewText = "net"; // 이 값을 바꾼 후 생성하면 컴포넌트 택스트 바뀜
 		
 	// 외부 조회용
 	//-------------------------------------------------------------------------------------------
 	// 내부적으로만 사용하는 변수
 
 	
-	ArrayList<JComponent> buttons = new ArrayList<JComponent>();
-	
+	ArrayList<JComponent> buttons = new ArrayList<JComponent>(); //컴포넌트들을 저장할 배열. 다양한 컴포넌트 저장을 위해 최상위 슈퍼 클래스 JComponent 사용
 	ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
 	ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
 	ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용 기본 : false, 선택 : true
-	ArrayList<Integer> TypeV = new ArrayList<Integer>();
-	ArrayList<String> TextV = new ArrayList<String> ();
+	ArrayList<Integer> TypeV = new ArrayList<Integer>(); //타입저장 배열
+	ArrayList<String> TextV = new ArrayList<String> (); // 텍스트 저장 배열
 	
 	
-	
+	// 현재 선택된 박스 번호	
 	int BoxNum = 0;
-	// 현재 선택된 박스 번호
+
+	
+	//컴포넌트 종류
 	public static int BUTTON = 1;
 	public static int JPANEL = 2;
 	public static int JSCROLL = 3;
@@ -48,8 +49,7 @@ public class componetVer extends JPanel
 	//움직일때 사용하는 사각형 구조체와 Point구조체
 	Rectangle rec;
 	Point moveP = new Point();
-	
-	
+		
 	
 
 	public componetVer()
@@ -75,105 +75,63 @@ public class componetVer extends JPanel
 			
 		removeAll();
 
+		//control -> model
 		boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);
 
-		buttons.clear();
+		
+		buttons.clear(); //컴포넌트 전체 삭제 후 다시생성
 		buttons.add(null);
 		
-		for(int i=1;i<boxM.ArrSize();i++)  // 모델 객체에 저장된 각 사각형을 매번 하나씩 전부 그림
+		for(int i=1;i<boxM.ArrSize();i++)  // 선택, 이동용 원
 		{
-			//배열에 저장된 정보를 사용해서 몇번째 상자가 선택되어져있는지 확인함. 선택된 상자는 빨간색
-				g.setColor(Color.RED);
-				g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
+			g.setColor(Color.RED);
+			g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
 		}
 
-
+		
+		//view
 		for(int i=1;i<boxM.ArrSize();i++)  // 모델 객체에 저장된 각 사각형을 매번 하나씩 전부 그림
 		{
-			JComponent j;
+			JComponent j =null;
 			
 			switch(boxM.getType(i))
 			{
 			case 1 :
 				j = new JButton(boxM.getString(i));
-				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
-				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
-				
-				j.setEnabled(true);
-				j.setFocusable(true);
-				
-				if(boxM.getClick(i))
-					j.setBackground(Color.RED);
-				else
-					j.setBackground(Color.WHITE);
-				
-				buttons.add(j);
-				add(buttons.get(i));
 				break;
 			case 2 :
 				j = new JPanel();
-				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
-				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
-				
-				j.setEnabled(true);
-				j.setFocusable(true);
-					
-				if(boxM.getClick(i))
-					j.setBackground(Color.RED);
-				else
-					j.setBackground(Color.WHITE);
-				
-				buttons.add(j);
-				add(buttons.get(i));
 				break;
-
 			case 3 :
 				j = new JScrollPane();
-				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
-				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
-				
-				j.setEnabled(true);
-				j.setFocusable(true);
-				
-					
-				if(boxM.getClick(i))
-					j.setBackground(Color.RED);
-				else
-					j.setBackground(Color.WHITE);
-				
-				buttons.add(j);
-				add(buttons.get(i));
 				break;
-
 			case 4 :
 				j = new JTextField(boxM.getString(i));
-				j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
-				j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
-				
-				j.setEnabled(true);
-				j.setFocusable(true);
-					
-				if(boxM.getClick(i))
-					j.setBackground(Color.RED);
-				else
-					j.setBackground(Color.WHITE);
-				
-				buttons.add(j);
-				add(buttons.get(i));
 				break;
-			}			
-		}
-		
+			}
+			
+			j.setLocation(boxM.recgetX(i),boxM.recgetY(i));  
+			j.setSize(boxM.getRecWidth(i), boxM.getRecHeight(i)); 
+			j.setEnabled(true);
+			j.setFocusable(true);
+			
+			if(boxM.getClick(i))
+				j.setBackground(Color.RED);
+			else
+				j.setBackground(Color.WHITE);
+			
+			buttons.add(j);
+			add(buttons.get(i));
+		}		
 		if(startP != null)
 		{
 			g.setColor(Color.BLACK);
 			g.drawRect(startP.x, startP.y, endP.x-startP.x, endP.y-startP.y);
-		}
-		
-		
-		
+		}	
 	}
 	
+	
+	//control
 	class MouseListen extends MouseAdapter implements MouseMotionListener
 	{
 		public void mouseClicked(MouseEvent e)
@@ -189,10 +147,7 @@ public class componetVer extends JPanel
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
 					for(int i=(endV.size()-1);i>0;i--) 
 					{							
-						Point sp = startV.get(i);
-						Point ep = endV.get(i);	
-						
-						tempRecClick = TransPoint.StartToTempOval(startV.get(i),30); //TransPoint.pointToRec(sp,ep); // 시작, 끝점 활용해 임시상자 생성
+						tempRecClick = TransPoint.StartToTempOval(startV.get(i),30);
 						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // 상자 안에 커서가 있으면
 						{	
 							for(int j=1;j<endV.size();j++)
@@ -246,8 +201,8 @@ public class componetVer extends JPanel
 
 			if(!ModeClick)//그리기 모드
 			{
-				TypeV.add(Choose);
-				TextV.add(viewText);
+				TypeV.add(Choose); // 타입선택용
+				TextV.add(viewText); // 텍스트 입력용
 				
 				startP = e.getPoint();	 // 생성 시 그려질때 나오는 임시 사각형	
 

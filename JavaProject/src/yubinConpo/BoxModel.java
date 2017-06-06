@@ -29,7 +29,7 @@ public class BoxModel
 		Box.add(null);
 		clickM.add(false);
 		ConType.add(null);
-
+		conText.add(null);
 	}
 
 
@@ -38,7 +38,6 @@ public class BoxModel
 	//배열 : 임시 포인트를 모델 객체에 저장
 	void ArrayPointToRec(ArrayList<Point> start, ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
-
 		Box.clear();
 		clickM.clear();
 		ConType.clear();
@@ -62,7 +61,8 @@ public class BoxModel
 		}
 	}
 
-	//상자 불러올때 사용, 모델 박스 객체를 startV,endV,clickV로 환원함.
+	
+	//상자 불러올때 사용, 저장되었던 모델 박스 객체 정보를 startV,endV,clickV, type, text로 환원함.
 	void RodeArrayBox(ArrayList<Point> start,ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
 		for(int i=0;i<Box.size();i++)
@@ -77,16 +77,18 @@ public class BoxModel
 
 
 
-
-	public String getString(int i)//텍스트 조회용
-	{
+	//텍스트 조회용
+	public String getString(int i){ 
 		return conText.get(i);
 	}
-	public Integer getType(int i){ // 타입 조회용
+	
+	 // 타입 조회용
+	public Integer getType(int i){
 		return ConType.get(i);
 	}
 
-	//control
+
+	
 	//현재 선택된 상자 번호 로드
 	public int getNum(){
 		return NowBoxNumM;
@@ -169,11 +171,6 @@ public class BoxModel
 	public int getRecHeight(){
 		return getRecHeight(NowBoxNumM);
 	}
-
-
-
-
-	//시작점 입력
 
 
 }
