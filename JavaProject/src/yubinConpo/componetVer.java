@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class componetVer extends JPanel
 {
 
-	public 	BoxModel boxM = new BoxModel("상자");
+	public static BoxModel boxM = new BoxModel("상자");
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	int Choose = BUTTON; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜

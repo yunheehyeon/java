@@ -8,6 +8,7 @@ import java.util.Vector;
 
 public class FinalRect extends JFrame 
 {
+	
 	public FinalRect()
 	{
 		setContentPane(new componetVer());
@@ -19,5 +20,7 @@ public class FinalRect extends JFrame
 	public static void main(String[] args) 
 	{
 		new FinalRect();
+    	new SaveOpen();
+
 	}
 }

@@ -9,9 +9,9 @@ public class BoxModel
 	public String BoxSetName;
 	public ArrayList<Rectangle> Box = new ArrayList<Rectangle>();
 	public ArrayList<Boolean> clickM = new ArrayList<Boolean>(); 
-	public int NowBoxNumM = 0;
 	public ArrayList<Integer> ConType = new ArrayList<Integer>();
 	public ArrayList<String> conText = new ArrayList<String> ();
+	public int NowBoxNumM = 0;
 
 	
 	
@@ -19,9 +19,28 @@ public class BoxModel
 	public static int JLABLE = 2;
 	public static int JSCROLL = 3;
 	public static int JTEXTFIELD = 4;
+
+	public ArrayList<JsonBox> jsonbox = new ArrayList<JsonBox>();
+
+	class JsonBox
+	{
+		Rectangle B;
+		boolean Cl;
+		int ComT;
+		String	ComText;
+		JsonBox(boolean Cl,int ComT, String ComText)
+		{
+			this.B=B;
+			this.Cl=Cl;
+			this.ComT=ComT;
+			this.ComText=ComText;
+		}
+	}
+
 	
-
-
+	
+	
+	
 
 	BoxModel(String BoxSetName)
 	{
@@ -35,7 +54,7 @@ public class BoxModel
 
 
 
-	//배열 : 임시 포인트를 모델 객체에 저장
+	//배열 : 임시 포인트를 boxM에 저장
 	void ArrayPointToRec(ArrayList<Point> start, ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
 		Box.clear();
@@ -68,11 +87,17 @@ public class BoxModel
 	{
 		for(int i=0;i<Box.size();i++)
 		{
-			start.set(i,TransPoint.RecToStartPoint(Box.get(i)));
-			end.set(i,TransPoint.RecToEndPoint(Box.get(i)));
-			click.set(i,clickM.get(i));
-			Type.set(i, ConType.get(i));
-			Text.set(i, conText.get(i));
+			start.clear();
+			end.clear();
+			click.clear();
+			Type.clear();
+			Text.clear();
+			
+			start.add(TransPoint.RecToStartPoint(Box.get(i)));
+			end.add(TransPoint.RecToEndPoint(Box.get(i)));
+			click.add(clickM.get(i));
+			Type.add(ConType.get(i));
+			Text.add(conText.get(i));
 		}
 	}
 

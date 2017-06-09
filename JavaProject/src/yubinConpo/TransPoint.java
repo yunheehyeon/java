@@ -1,6 +1,7 @@
 package yubinConpo;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TransPoint // 유틸
 {
@@ -33,6 +34,17 @@ public class TransPoint // 유틸
 	// 좌측 상단 끝점을 중심으로 하는 가로 i포인트, 세로 i포인트인 임시 원 생성(이동 가능 범위)
 	public static Rectangle StartToTempOval(Point start,int i){ 
 		return new Rectangle(start.x-i,start.y-i,i*2,i*2);
+	}
+	
+	public static void JsonToBox(ArrayList<JsonBox> j, BoxModel b)
+	{
+		j.clear();
+		JsonBox temp;
+		for(int i=1;i<b.ArrSize();i++)
+		{
+			temp = new JsonBox(b.getRec(i),b.getClick(i),b.getType(i),b.getString(i));
+			j.add(temp);
+		}		
 	}
 
 }
