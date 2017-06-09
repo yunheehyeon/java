@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class componetVer extends JPanel
 {
 
-	public 	BoxModel boxM = new BoxModel("상자");
+	public static BoxModel boxM = new BoxModel("상자");
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	int Choose = BUTTON; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
@@ -82,17 +82,13 @@ public class componetVer extends JPanel
 		buttons.clear(); //컴포넌트 전체 삭제 후 다시생성
 		buttons.add(null);
 		
-		for(int i=1;i<boxM.ArrSize();i++)  // 선택, 이동용 원
-		{
-			g.setColor(Color.RED);
-			g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
-		}
+	
 
 		
 		//view
-		for(int i=1;i<boxM.ArrSize();i++)  // 모델 객체에 저장된 각 사각형을 매번 하나씩 전부 그림
+		for(int i=1;i<boxM.ArrSize();i++)  // 컴포넌트 생성후 
 		{
-			JComponent j =null;
+			JComponent j =null; // 각 컴포넌트의 슈퍼 클래스인 JComponent로 선언 
 			
 			switch(boxM.getType(i))
 			{
@@ -121,8 +117,17 @@ public class componetVer extends JPanel
 				j.setBackground(Color.WHITE);
 			
 			buttons.add(j);
+		}
+		
+		for(int i=1;i<boxM.ArrSize();i++){  // 선택 및 이동용 원
+			g.setColor(Color.RED);
+			g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
+		}
+		
+		for(int i=(boxM.ArrSize()-1);i>0;i--){ // 모델 객체에 저장된 각 사각형을 매번 하나씩 전부 그림(최신을 맨 위에) 
 			add(buttons.get(i));
 		}		
+		
 		if(startP != null)
 		{
 			g.setColor(Color.BLACK);
@@ -130,19 +135,17 @@ public class componetVer extends JPanel
 		}	
 	}
 	
-	
 	//control
 	class MouseListen extends MouseAdapter implements MouseMotionListener
 	{
 		public void mouseClicked(MouseEvent e)
 		{
 			Rectangle tempRecClick;
+			
 			if(ModeClick)//선택 모드 
 			{
 				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택하기
 				{
-					//removeAll();
-
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
 					for(int i=(endV.size()-1);i>0;i--) 
@@ -150,7 +153,7 @@ public class componetVer extends JPanel
 						tempRecClick = TransPoint.StartToTempOval(startV.get(i),30);
 						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // 상자 안에 커서가 있으면
 						{	
-							for(int j=1;j<endV.size();j++)
+							for(int j=0;j<endV.size();j++)
 								clickV.set(j,false);
 								//아무 상자나 클릭하면 우선 전체 색깔 초기화 한후
 							clickV.set(i,true);
@@ -160,6 +163,7 @@ public class componetVer extends JPanel
 						}
 						else // 배경 클릭하면 초기화 
 						{
+							clickV.set(0,true);
 							for(int j=1;j<endV.size();j++)
 							{
 								clickV.set(j,false);
@@ -177,18 +181,17 @@ public class componetVer extends JPanel
 						clickV.remove(BoxNum);
 						BoxNum=0; // 선택된 박스 해제
 					}
-				}						
+				}
+				
+				boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);
+				//System.out.println(boxM.NowBoxNumM);
 			}
 			repaint();	
-
 		}
 
 
 		public void mousePressed(MouseEvent e)
 		{
-			Rectangle tempRecSize; 
-			//사이즈 변경할 때 쓰는 임시 사각형
-
 			if(e.getButton()==2) // 마우스 가운데 바튼 누르면 만들기 모드 <-> 선택모드 선택 가능
 			{
 				if(ModeClick)
@@ -196,9 +199,9 @@ public class componetVer extends JPanel
 				else
 					ModeClick = true;
 			}
-			else{}//구분용 신경 ㄴㄴ
-
-
+			Rectangle tempRecSize; 
+			//사이즈 변경할 때 쓰는 임시 사각형
+			
 			if(!ModeClick)//그리기 모드
 			{
 				TypeV.add(Choose); // 타입선택용
@@ -238,13 +241,13 @@ public class componetVer extends JPanel
 							moveDragged = true;
 						}
 					}
-				}
-			}
+				}			
+			}	
 		}
 
 
 		public void mouseReleased(MouseEvent e)
-		{
+		{			
 			startP = null;
 			endP = null;// 릴리스하면 생성 시 그려질때 나오는 임시 사각형 삭제
 
