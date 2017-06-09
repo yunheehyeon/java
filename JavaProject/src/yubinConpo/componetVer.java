@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class componetVer extends JPanel
 {
 
-	public 	BoxModel boxM = new BoxModel("»óÀÚ");
+	public static BoxModel boxM = new BoxModel("»óÀÚ");
 	public boolean ModeClick = false; // false : ±×¸®±â ¸ğµå, true : ¼±ÅÃ¸ğµå
 	
 	int Choose = BUTTON; // ÀÌ °ªÀ» ¹Ù²Û ÈÄ »ı¼ºÇÏ¸é ÄÄÆ÷³ÍÆ® Á¾·ù ¹Ù²ñ
@@ -82,17 +82,13 @@ public class componetVer extends JPanel
 		buttons.clear(); //ÄÄÆ÷³ÍÆ® ÀüÃ¼ »èÁ¦ ÈÄ ´Ù½Ã»ı¼º
 		buttons.add(null);
 		
-		for(int i=1;i<boxM.ArrSize();i++)  // ¼±ÅÃ, ÀÌµ¿¿ë ¿ø
-		{
-			g.setColor(Color.RED);
-			g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
-		}
+	
 
 		
 		//view
-		for(int i=1;i<boxM.ArrSize();i++)  // ¸ğµ¨ °´Ã¼¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ÇÏ³ª¾¿ ÀüºÎ ±×¸²
+		for(int i=1;i<boxM.ArrSize();i++)  // ÄÄÆ÷³ÍÆ® »ı¼ºÈÄ 
 		{
-			JComponent j =null;
+			JComponent j =null; // °¢ ÄÄÆ÷³ÍÆ®ÀÇ ½´ÆÛ Å¬·¡½ºÀÎ JComponent·Î ¼±¾ğ 
 			
 			switch(boxM.getType(i))
 			{
@@ -122,9 +118,21 @@ public class componetVer extends JPanel
 			
 			buttons.add(j);
 		}
+<<<<<<< HEAD
 		for(int i=boxM.ArrSize()-1;i>0;i--)  // ¸ğµ¨ °´Ã¼¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ÇÏ³ª¾¿ ÀüºÎ ±×¸²
 			add(buttons.get(i));
 
+=======
+		
+		for(int i=1;i<boxM.ArrSize();i++){  // ¼±ÅÃ ¹× ÀÌµ¿¿ë ¿ø
+			g.setColor(Color.RED);
+			g.drawOval(boxM.recgetX(i)-15,boxM.recgetY(i) -15, 30, 30);
+		}
+		
+		for(int i=(boxM.ArrSize()-1);i>0;i--){ // ¸ğµ¨ °´Ã¼¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ÇÏ³ª¾¿ ÀüºÎ ±×¸²(ÃÖ½ÅÀ» ¸Ç À§¿¡) 
+			add(buttons.get(i));
+		}		
+>>>>>>> ì„ì‹œ
 		
 		if(startP != null)
 		{
@@ -133,19 +141,17 @@ public class componetVer extends JPanel
 		}	
 	}
 	
-	
 	//control
 	class MouseListen extends MouseAdapter implements MouseMotionListener
 	{
 		public void mouseClicked(MouseEvent e)
 		{
 			Rectangle tempRecClick;
+			
 			if(ModeClick)//¼±ÅÃ ¸ğµå 
 			{
 				if(e.getButton()==1) // ¿ŞÂÊ ¸¶¿ì½º ´©¸¦ ¶§ = ¼±ÅÃÇÏ±â
 				{
-					//removeAll();
-
 					//º¤ÅÍ¿¡ ÀúÀåµÈ »ç°¢Çü ¾È¿¡ Ä¿¼­°¡ ÀÖ´Â Áö È®ÀÎ
 					// º¤ÅÍ¿¡ ÀúÀåµÈ °¢ »ç°¢ÇüÀ» ¸Å¹ø ±×¸². ´Ü, ÃÖ±Ù¿¡ ±×·ÁÁø »ç°¢ÇüÀÌ °¡Àå ¸ÕÀú °Ë»ç
 					for(int i=(endV.size()-1);i>0;i--) 
@@ -153,7 +159,7 @@ public class componetVer extends JPanel
 						tempRecClick = TransPoint.StartToTempOval(startV.get(i),30);
 						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // »óÀÚ ¾È¿¡ Ä¿¼­°¡ ÀÖÀ¸¸é
 						{	
-							for(int j=1;j<endV.size();j++)
+							for(int j=0;j<endV.size();j++)
 								clickV.set(j,false);
 								//¾Æ¹« »óÀÚ³ª Å¬¸¯ÇÏ¸é ¿ì¼± ÀüÃ¼ »ö±ò ÃÊ±âÈ­ ÇÑÈÄ
 							clickV.set(i,true);
@@ -163,6 +169,7 @@ public class componetVer extends JPanel
 						}
 						else // ¹è°æ Å¬¸¯ÇÏ¸é ÃÊ±âÈ­ 
 						{
+							clickV.set(0,true);
 							for(int j=1;j<endV.size();j++)
 							{
 								clickV.set(j,false);
@@ -180,15 +187,18 @@ public class componetVer extends JPanel
 						clickV.remove(BoxNum);
 						BoxNum=0; // ¼±ÅÃµÈ ¹Ú½º ÇØÁ¦
 					}
-				}						
+				}
+				
+				boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);
+				//System.out.println(boxM.NowBoxNumM);
 			}
 			repaint();	
-
 		}
 
 
 		public void mousePressed(MouseEvent e)
 		{
+<<<<<<< HEAD
 			Rectangle tempRecSize; 
 			//»çÀÌÁî º¯°æÇÒ ¶§ ¾²´Â ÀÓ½Ã »ç°¢Çü
 
@@ -237,6 +247,8 @@ public class componetVer extends JPanel
 				}
 			}
 			
+=======
+>>>>>>> ì„ì‹œ
 			if(e.getButton()==2) // ¸¶¿ì½º °¡¿îµ¥ ¹ÙÆ° ´©¸£¸é ¸¸µé±â ¸ğµå <-> ¼±ÅÃ¸ğµå ¼±ÅÃ °¡´É
 			{
 				if(ModeClick)
@@ -244,15 +256,70 @@ public class componetVer extends JPanel
 				else
 					ModeClick = true;
 			}
+<<<<<<< HEAD
 			else{}//±¸ºĞ¿ë ½Å°æ ¤¤¤¤
 
 
+=======
+			Rectangle tempRecSize; 
+			//»çÀÌÁî º¯°æÇÒ ¶§ ¾²´Â ÀÓ½Ã »ç°¢Çü
+			
+			if(!ModeClick)//±×¸®±â ¸ğµå
+			{
+				TypeV.add(Choose); // Å¸ÀÔ¼±ÅÃ¿ë
+				TextV.add(viewText); // ÅØ½ºÆ® ÀÔ·Â¿ë
+				
+				startP = e.getPoint();	 // »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü	
+
+				//ÇöÀç Ä¿¼­ ÁÂÇ¥ ÀúÀå ¹× clickV¿¡ ÇØ´ç µµÇü ¹øÈ£ »ı¼ºÈÄ false·Î ÃÊ±âÈ­
+				startV.add(e.getPoint());
+				clickV.add(false);
+			}
+			else 		//¼±ÅÃ¸ğµå
+			{
+				if(BoxNum!=0) //»óÀÚ°¡ 1°³¶óµµ ÀÖ¾î¾ß ÀÛµ¿ÇÔ.(0¹øÀº Null»óÀÚÀÓÀ¸·Î ¾ø´Â ¼À Ä§)
+				{
+					tempRecSize = TransPoint.EndToTempRec(endV.get(BoxNum),15);
+					// ÇØ´ç »ç°¢Çü ³¡Á¡ ÁÖÀ§¿¡ ÀÓ½Ã »ç°¢Çü(³¡Á¡ Áß½ÉÀ¸·Î °¡·Î 30, ¼¼·Î 30)»ı¼º
+					// ÀÓ½Ã »ç°¢Çü(¿ìÃøÇÏ´Ü ¸ğ¼­¸® ±ÙÃ³) ¾È¿¡ Ä¿¼­°¡ ÀÖÀ» °æ¿ì
+					if(tempRecSize.contains(new Point(e.getX(),e.getY())))
+					{			
+						//µå·¡±× ½ÃÀÛÀ» Ç¥½Ã
+						sizeDragged = true;
+					}
+					else
+					{	
+						//ÀÓ½Ã »ç°¢Çü(Å©±âÁ¶Àı¿ë) ¾È¿¡ X && »ç°¢Çü ³»ºÎ¿¡ Ä¿¼­°¡ ÀÖÀ» °æ¿ì
+						//»ç°¢Çü ÀÚÃ¼¸¦ ¿òÁ÷¿©¾ßÇÔÀ¸·Î, ÆíÀÇ¸¦ À§ÇØ ÇØ´ç »ç°¢ÇüÀ» ÀÓ½Ã»ç°¢Çü¿¡ ÀúÀåÇØ¼­ ¿¬»ê.
+						Rectangle tempRec = TransPoint.StartToTempOval(startV.get(BoxNum),30);
+						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //ÀÓ½Ã»ç°¢Çü
+						if(tempRec.contains(new Point(e.getX(),e.getY())))
+						{
+							//»ó´ë À§Ä¡ ÀúÀå
+							moveP.x=e.getX() - rec.x;
+							moveP.y=e.getY() - rec.y;
+					
+							//µå·¡±× ½ÃÀÛÀ» Ç¥½Ã
+							moveDragged = true;
+						}
+					}
+				}			
+			}	
+>>>>>>> ì„ì‹œ
 		}
 
 
 		public void mouseReleased(MouseEvent e)
+<<<<<<< HEAD
 		{
 			if(e.getButton()==1)
+=======
+		{			
+			startP = null;
+			endP = null;// ¸±¸®½ºÇÏ¸é »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü »èÁ¦
+
+			if(!ModeClick) // ±×¸®±â ¸ğµå, Ä¿¼­ ¶¼´Â ¼ø°£ ÇöÀç ÁÂÇ¥¸¦ end¿¡ ³ÖÀ½
+>>>>>>> ì„ì‹œ
 			{
 				startP = null;
 				endP = null;// ¸±¸®½ºÇÏ¸é »ı¼º ½Ã ±×·ÁÁú¶§ ³ª¿À´Â ÀÓ½Ã »ç°¢Çü »èÁ¦

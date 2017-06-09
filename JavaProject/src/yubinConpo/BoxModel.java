@@ -55,7 +55,8 @@ public class BoxModel
 			ConType.add(Type.get(i));
 			conText.add(Text.get(i));
 
-			
+			if(click.get(0)==true)
+				NowBoxNumM = 0;
 			if(click.get(i)==true)
 				NowBoxNumM = i;
 		}
