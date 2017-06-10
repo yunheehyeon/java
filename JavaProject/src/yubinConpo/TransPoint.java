@@ -64,6 +64,9 @@ public class TransPoint // À¯Æ¿
 		componetVer.TextV.add(null);
 
 		FinalRect.comTemp.repaint();
+		FinalRect.comTemp.BoxNum = 0;
+		FinalRect.comTemp.OpenNum = false;
+
 	}
 
 	

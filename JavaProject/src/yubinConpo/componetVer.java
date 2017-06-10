@@ -29,7 +29,7 @@ public class componetVer extends JPanel
 	public static boolean OpenNum = false;
 	
 	// 현재 선택된 박스 번호	
-	int BoxNum = 0;
+	public static int BoxNum = 0;
 
 	
 	//컴포넌트 종류
