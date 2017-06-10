@@ -81,9 +81,8 @@ public class BoxModel
 			Text.add(conText.get(i));
 		}
 	}
-
-
-
+	
+	
 	//텍스트 조회용
 	public String getString(int i){ 
 		return conText.get(i);

@@ -47,6 +47,25 @@ public class TransPoint // 유틸
 		componetVer.viewText = a;
 	}
 	
+	// 모두 삭제용
+	
+	void AllCompclear()
+	{
+		componetVer.startV.clear();
+		componetVer.endV.clear();
+		componetVer.clickV.clear();
+		componetVer.TypeV.clear();
+		componetVer.TextV.clear();
+		
+		componetVer.startV.add(new Point(10,10));
+		componetVer.endV.add(new Point(10,10));
+		componetVer.clickV.add(false);
+		componetVer.TypeV.add(null);
+		componetVer.TextV.add(null);
+
+		FinalRect.comTemp.repaint();
+	}
+
 	
 	
 	
