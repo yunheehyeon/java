@@ -208,6 +208,8 @@ public class componetVer extends JPanel
 						startV.remove(BoxNum);
 						endV.remove(BoxNum);
 						clickV.remove(BoxNum);
+						TypeV.remove(BoxNum); //타입저장 배열
+						TextV.remove(BoxNum);
 						BoxNum=0; // 선택된 박스 해제
 					}
 				}						
