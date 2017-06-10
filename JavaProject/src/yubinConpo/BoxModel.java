@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class BoxModel
 {
-	public String BoxSetName;
 	public ArrayList<Rectangle> Box = new ArrayList<Rectangle>();
 	public ArrayList<Boolean> clickM = new ArrayList<Boolean>(); 
 	public ArrayList<Integer> ConType = new ArrayList<Integer>();
@@ -20,38 +19,13 @@ public class BoxModel
 	public static int JSCROLL = 3;
 	public static int JTEXTFIELD = 4;
 
-	public ArrayList<JsonBox> jsonbox = new ArrayList<JsonBox>();
-
-	class JsonBox
+	BoxModel( )
 	{
-		Rectangle B;
-		boolean Cl;
-		int ComT;
-		String	ComText;
-		JsonBox(boolean Cl,int ComT, String ComText)
-		{
-			this.B=B;
-			this.Cl=Cl;
-			this.ComT=ComT;
-			this.ComText=ComText;
-		}
-	}
-
-	
-	
-	
-	
-
-	BoxModel(String BoxSetName)
-	{
-		this.BoxSetName = BoxSetName;
 		Box.add(null);
 		clickM.add(false);
 		ConType.add(null);
 		conText.add(null);
 	}
-
-
 
 
 	//배열 : 임시 포인트를 boxM에 저장

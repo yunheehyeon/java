@@ -36,15 +36,62 @@ public class TransPoint // 유틸
 		return new Rectangle(start.x-i,start.y-i,i*2,i*2);
 	}
 	
+	//박스 -> json용 배열로 변환
 	public static void JsonToBox(ArrayList<JsonBox> j, BoxModel b)
 	{
 		j.clear();
 		JsonBox temp;
-		for(int i=1;i<b.ArrSize();i++)
+		for(int i=0;i<b.ArrSize();i++)
 		{
-			temp = new JsonBox(b.getRec(i),b.getClick(i),b.getType(i),b.getString(i));
-			j.add(temp);
+			if(i==0)
+			{
+				temp = new JsonBox(0,0,0,0,
+						false,
+						0,
+						"null");
+				j.add(temp);
+			}
+			else
+			{
+				temp = new JsonBox(
+						(int)b.getRec(i).getX(), 
+						(int)b.getRec(i).getY(), 
+						(int)b.getRec(i).getWidth(), 
+						(int)b.getRec(i).getHeight(),
+						b.getClick(i),
+						b.getType(i),
+						b.getString(i));
+				j.add(temp);
+			}
 		}		
+	}
+	
+	
+	//json 배열-> 박스 변환
+	public static void BoxToJson(ArrayList<JsonBox> j, BoxModel b)
+	{
+		b.Box.clear();
+		b.clickM.clear();
+		b.ConType.clear();
+		b.conText.clear();
+		
+		Rectangle temp;
+	
+		b.Box.add(new Rectangle(10,10,0,0));
+		b.clickM.add(false);
+		b.ConType.add(null);
+		b.conText.add(null);
+		
+		for(int i=1;i<j.size();i++)
+		{
+			temp = new Rectangle(j.get(i).x,j.get(i).y,j.get(i).width,j.get(i).height);
+			b.Box.add(temp);
+			b.clickM.add(j.get(i).Cl);
+			b.ConType.add(j.get(i).ComT);
+			b.conText.add(j.get(i).ComText);
+			
+		}
+		b.NowBoxNumM=0;
 	}
 
 }

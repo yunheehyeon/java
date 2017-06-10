@@ -4,10 +4,13 @@ import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -15,7 +18,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
  
 public class test {
@@ -56,6 +66,28 @@ class SaveOpen extends JFrame implements ActionListener{
         public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == jbt_open){
                         if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){ // showopendialog 열기 창을 열고 확인 버튼을 눌렀는지 확인
+                        	
+                        	
+                        	try
+                        	{
+                        		Gson gson = new Gson();                        		  
+                        		BufferedReader br = new BufferedReader(new FileReader(jfc.getSelectedFile().toString()));
+                        		ArrayList<JsonBox> jsonbox =  gson.fromJson(br,  new TypeToken<ArrayList<JsonBox>>(){}.getType());
+                        		TransPoint.BoxToJson(jsonbox,componetVer.boxM);
+                        		
+                        		componetVer.boxM.RodeArrayBox(componetVer.startV,componetVer.endV,componetVer.clickV, componetVer.TypeV,componetVer.TextV);
+                        		
+                        		
+                        		for(int i=0;i<componetVer.boxM.ArrSize();i++)
+                        		System.out.println(componetVer.boxM.getType(i));
+                    			repaint();	
+
+                        	}
+                        	catch(IOException g)
+                        	{
+                        		g.printStackTrace();
+                        	}                   	
+
                         	
                         	
                         }
@@ -104,25 +136,5 @@ class jsonSave
 	
 }
 
-
-
-
-class JsonBox
-{
-	Rectangle B;
-	boolean Cl;
-	int ComT;
-	String	ComText;
-	JsonBox(Rectangle B, boolean Cl,int ComT, String ComText)
-	{
-		this.B=B;
-		this.Cl=Cl;
-		this.ComT=ComT;
-		this.ComText=ComText;
-	}
-	
-	
-	
-}
 
 

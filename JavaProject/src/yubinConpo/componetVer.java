@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class componetVer extends JPanel
 {
 
-	public static BoxModel boxM = new BoxModel("상자");
+	public static BoxModel boxM = new BoxModel();
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
 	int Choose = BUTTON; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
@@ -20,11 +20,11 @@ public class componetVer extends JPanel
 
 	
 	ArrayList<JComponent> buttons = new ArrayList<JComponent>(); //컴포넌트들을 저장할 배열. 다양한 컴포넌트 저장을 위해 최상위 슈퍼 클래스 JComponent 사용
-	ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
-	ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
-	ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용 기본 : false, 선택 : true
-	ArrayList<Integer> TypeV = new ArrayList<Integer>(); //타입저장 배열
-	ArrayList<String> TextV = new ArrayList<String> (); // 텍스트 저장 배열
+	public static ArrayList<Point> startV = new ArrayList<Point>(); // 시작점 모음 배열 
+	public static ArrayList<Point> endV = new ArrayList<Point>(); // 끝점 모음 배열 
+	public static ArrayList<Boolean> clickV = new ArrayList<Boolean>(); //클릭되어진 사각형 확인용 기본 : false, 선택 : true
+	public static ArrayList<Integer> TypeV = new ArrayList<Integer>(); //타입저장 배열
+	public static ArrayList<String> TextV = new ArrayList<String> (); // 텍스트 저장 배열
 	
 	
 	// 현재 선택된 박스 번호	
