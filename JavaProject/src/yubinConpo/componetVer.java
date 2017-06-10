@@ -11,7 +11,7 @@ public class componetVer extends JPanel
 	public static BoxModel boxM = new BoxModel();
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
-	public static int Choose = 1; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
+	public static int Choose = 2; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
 	public static String viewText = "net"; // 이 값을 바꾼 후 생성하면 컴포넌트 택스트 바뀜
 		
 	// 외부 조회용
@@ -76,10 +76,10 @@ public class componetVer extends JPanel
 		removeAll();
 
 		//control -> model
-		if(boxM.ArrSize()==0)
+		/*if(boxM.ArrSize()>1)
 		{
 			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
-		}
+		}*/
 		
 		
 		for(int i=0;i<boxM.ArrSize();i++)
@@ -187,6 +187,8 @@ public class componetVer extends JPanel
 				}						
 			}
 			repaint();	
+			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
+
 
 		}
 
@@ -235,7 +237,7 @@ public class componetVer extends JPanel
 						//사각형 자체를 움직여야함으로, 편의를 위해 해당 사각형을 임시사각형에 저장해서 연산.
 						Rectangle tempRec = TransPoint.StartToTempOval(startV.get(BoxNum),30);
 						rec = TransPoint.pointToRec(startV.get(BoxNum),endV.get(BoxNum)); //임시사각형
-						if(tempRec.contains(new Point(e.getX(),e.getY())))
+						if(rec.contains(new Point(e.getX(),e.getY()))||tempRec.contains(new Point(e.getX(),e.getY())))
 						{
 							//상대 위치 저장
 							moveP.x=e.getX() - rec.x;
@@ -263,7 +265,9 @@ public class componetVer extends JPanel
 			sizeDragged = false;
 			moveDragged = false;	
 
-			repaint();			
+			repaint();		
+			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
+
 		}
 		
 		public void mouseDragged(MouseEvent e)
@@ -298,6 +302,8 @@ public class componetVer extends JPanel
 			else
 				endP = e.getPoint(); // 생성 시 그려질때 나오는 임시 사각형
 			repaint();
+			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
+
 		}					
 	}
 }
