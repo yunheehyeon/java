@@ -11,8 +11,8 @@ public class componetVer extends JPanel
 	public static BoxModel boxM = new BoxModel();
 	public boolean ModeClick = false; // false : 그리기 모드, true : 선택모드
 	
-	int Choose = BUTTON; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
-	String viewText = "net"; // 이 값을 바꾼 후 생성하면 컴포넌트 택스트 바뀜
+	public static int Choose = 1; // 이 값을 바꾼 후 생성하면 컴포넌트 종류 바뀜
+	public static String viewText = "net"; // 이 값을 바꾼 후 생성하면 컴포넌트 택스트 바뀜
 		
 	// 외부 조회용
 	//-------------------------------------------------------------------------------------------
@@ -76,7 +76,14 @@ public class componetVer extends JPanel
 		removeAll();
 
 		//control -> model
-		boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);
+		if(boxM.ArrSize()==0)
+		{
+			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
+		}
+		
+		
+		for(int i=0;i<boxM.ArrSize();i++)
+    		System.out.println(boxM.getType(i));
 
 		
 		buttons.clear(); //컴포넌트 전체 삭제 후 다시생성

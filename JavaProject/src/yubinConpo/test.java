@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -18,18 +16,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
  
 public class test {
-        public static void main (String [] args) {
+        public static void main1 (String [] args) {
         	SaveOpen tf = new SaveOpen();
         }
 }
@@ -73,14 +65,16 @@ class SaveOpen extends JFrame implements ActionListener{
                         		Gson gson = new Gson();                        		  
                         		BufferedReader br = new BufferedReader(new FileReader(jfc.getSelectedFile().toString()));
                         		ArrayList<JsonBox> jsonbox =  gson.fromJson(br,  new TypeToken<ArrayList<JsonBox>>(){}.getType());
+                        		
                         		TransPoint.BoxToJson(jsonbox,componetVer.boxM);
                         		
                         		componetVer.boxM.RodeArrayBox(componetVer.startV,componetVer.endV,componetVer.clickV, componetVer.TypeV,componetVer.TextV);
-                        		
+
                         		
                         		for(int i=0;i<componetVer.boxM.ArrSize();i++)
                         		System.out.println(componetVer.boxM.getType(i));
-                    			repaint();	
+                        		
+                        		FinalRect.comTemp.repaint();	
 
                         	}
                         	catch(IOException g)
@@ -113,28 +107,7 @@ class SaveOpen extends JFrame implements ActionListener{
                         	{
                         		g.printStackTrace();
                         	}
-                        	
-
                         }
                 }
         }
-        
-        
-    	
-    	
-    	//json에 저장될 배열 만드는 메소드, j에 저장
-    	
-    	
-        
 }
-
-class jsonSave
-{
-	Gson gson = new Gson();
-	String json = gson.toJson(componetVer.boxM);
-	
-	
-}
-
-
-

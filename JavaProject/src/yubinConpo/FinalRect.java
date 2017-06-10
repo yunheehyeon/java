@@ -8,10 +8,12 @@ import java.util.Vector;
 
 public class FinalRect extends JFrame 
 {
+	public static componetVer comTemp;
 	
 	public FinalRect()
 	{
-		setContentPane(new componetVer());
+		comTemp = new componetVer();
+		setContentPane(comTemp);
 		setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

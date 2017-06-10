@@ -36,6 +36,21 @@ public class TransPoint // 유틸
 		return new Rectangle(start.x-i,start.y-i,i*2,i*2);
 	}
 	
+	
+	// choose변환용
+	void ChangeChoose(int i)	{
+		componetVer.Choose = i;
+	}
+	
+	//viewText 변환용
+	void ChangeviewText(String a) {
+		componetVer.viewText = a;
+	}
+	
+	
+	
+	
+	
 	//박스 -> json용 배열로 변환
 	public static void JsonToBox(ArrayList<JsonBox> j, BoxModel b)
 	{
@@ -92,6 +107,8 @@ public class TransPoint // 유틸
 			
 		}
 		b.NowBoxNumM=0;
+		componetVer.boxM.RodeArrayBox(componetVer.startV,componetVer.endV,componetVer.clickV, componetVer.TypeV,componetVer.TextV);
+
 	}
 
 }
