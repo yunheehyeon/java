@@ -69,7 +69,7 @@ class SaveOpen extends JFrame implements ActionListener{
                         		TransPoint.BoxToJson(jsonbox,componetVer.boxM);
                         		
                         		componetVer.boxM.RodeArrayBox(componetVer.startV,componetVer.endV,componetVer.clickV, componetVer.TypeV,componetVer.TextV);
-
+                        		componetVer.OpenNum=true;
                         		
                         		for(int i=0;i<componetVer.boxM.ArrSize();i++)
                         		System.out.println(componetVer.boxM.getType(i));

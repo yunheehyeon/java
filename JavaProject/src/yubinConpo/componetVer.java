@@ -26,6 +26,7 @@ public class componetVer extends JPanel
 	public static ArrayList<Integer> TypeV = new ArrayList<Integer>(); //타입저장 배열
 	public static ArrayList<String> TextV = new ArrayList<String> (); // 텍스트 저장 배열
 	
+	public static boolean OpenNum = false;
 	
 	// 현재 선택된 박스 번호	
 	int BoxNum = 0;
@@ -74,13 +75,18 @@ public class componetVer extends JPanel
 		super.paintComponent(g); 	
 			
 		removeAll();
-
-		//control -> model
-		/*if(boxM.ArrSize()>1)
+		
+		
+		if(OpenNum)
+		{
+    		boxM.RodeArrayBox(startV,endV,clickV, TypeV,TextV);
+    		OpenNum=false;
+		}
+		else
 		{
 			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
-		}*/
-		
+		}
+
 		
 		for(int i=0;i<boxM.ArrSize();i++)
     		System.out.println(boxM.getType(i));
@@ -128,8 +134,11 @@ public class componetVer extends JPanel
 				j.setBackground(Color.WHITE);
 			
 			buttons.add(j);
-			add(buttons.get(i));
 		}		
+		for(int i=boxM.ArrSize()-1;i>0;i--)
+			add(buttons.get(i));
+
+		
 		if(startP != null)
 		{
 			g.setColor(Color.BLACK);
@@ -144,6 +153,7 @@ public class componetVer extends JPanel
 		public void mouseClicked(MouseEvent e)
 		{
 			Rectangle tempRecClick;
+			Rectangle tempRecClick2;
 			if(ModeClick)//선택 모드 
 			{
 				if(e.getButton()==1) // 왼쪽 마우스 누를 때 = 선택하기
@@ -153,9 +163,15 @@ public class componetVer extends JPanel
 					//벡터에 저장된 사각형 안에 커서가 있는 지 확인
 					// 벡터에 저장된 각 사각형을 매번 그림. 단, 최근에 그려진 사각형이 가장 먼저 검사
 					for(int i=(endV.size()-1);i>0;i--) 
-					{							
+					{	
+						
 						tempRecClick = TransPoint.StartToTempOval(startV.get(i),30);
-						if(tempRecClick.contains(new Point(e.getX(),e.getY()))) // 상자 안에 커서가 있으면
+
+						Point sp = startV.get(i);
+						Point ep = endV.get(i);	
+						tempRecClick2 = TransPoint.pointToRec(sp,ep); // 시작, 끝점 활용해 임시상자 생성
+						
+						if(tempRecClick2.contains(new Point(e.getX(),e.getY()))||tempRecClick.contains(new Point(e.getX(),e.getY()))) // 상자 안에 커서가 있으면
 						{	
 							for(int j=1;j<endV.size();j++)
 								clickV.set(j,false);
@@ -187,8 +203,6 @@ public class componetVer extends JPanel
 				}						
 			}
 			repaint();	
-			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
-
 
 		}
 
@@ -265,9 +279,7 @@ public class componetVer extends JPanel
 			sizeDragged = false;
 			moveDragged = false;	
 
-			repaint();		
-			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
-
+			repaint();			
 		}
 		
 		public void mouseDragged(MouseEvent e)
@@ -302,8 +314,6 @@ public class componetVer extends JPanel
 			else
 				endP = e.getPoint(); // 생성 시 그려질때 나오는 임시 사각형
 			repaint();
-			boxM.ArrayPointToRec(startV,endV,clickV, TypeV,TextV);		
-
 		}					
 	}
 }

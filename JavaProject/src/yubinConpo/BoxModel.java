@@ -59,14 +59,21 @@ public class BoxModel
 	//상자 불러올때 사용, 저장되었던 모델 박스 객체 정보를 startV,endV,clickV, type, text로 환원함.
 	void RodeArrayBox(ArrayList<Point> start,ArrayList<Point> end, ArrayList<Boolean> click,  ArrayList<Integer> Type, ArrayList<String> Text)
 	{
-		for(int i=0;i<Box.size();i++)
-		{
-			start.clear();
-			end.clear();
-			click.clear();
-			Type.clear();
-			Text.clear();
-			
+		start.clear();
+		end.clear();
+		click.clear();
+		Type.clear();
+		Text.clear();
+		
+		
+		start.add(new Point(10,10));
+		end.add(new Point(10,10));
+		click.add(false);
+		Type.add(null);
+		Text.add(null);
+		
+		for(int i=1;i<Box.size();i++)
+		{			
 			start.add(TransPoint.RecToStartPoint(Box.get(i)));
 			end.add(TransPoint.RecToEndPoint(Box.get(i)));
 			click.add(clickM.get(i));
